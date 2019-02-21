@@ -8,7 +8,9 @@
 b023200hTank::b023200hTank(SDL_Renderer* renderer, TankSetupDetails details) 
 	: BaseTank(renderer, details)
 {
-	astar = new AStar(this,renderer,mCollisionMap);
+	astar = new AStar(this,mCollisionMap);
+
+
 }
 
 //--------------------------------------------------------------------------------------------------
@@ -33,31 +35,48 @@ void b023200hTank::ChangeState(BASE_TANK_STATE newState)
 void b023200hTank::Update(float deltaTime, SDL_Event e)
 {
 	BaseTank::Update(deltaTime, e);
-	int x = 0, y = 0;
-	SDL_GetMouseState(&x, &y);
+	
+	
+	//SDL_GetMouseState(&x, &y);
 
-//	std::cout << "x = " << x << " my x = " << this->GetPosition().x << " y = " << y << " my y =  " << this->GetPosition().y << " distance" << (Vec2DDistance(Vector2D(x, y), this->GetPosition())) << "\n";
-	float radian = (atan2(y - this->GetPosition().y, x - this->GetPosition().x));
 
-	//SetHeading(Vector2D(x, y));
-	//mCurrentSpeed++;
-
+	switch (e.type)
+	{
+		case SDL_MOUSEBUTTONUP:
+		{
+			switch (e.button.button)
+			{
+			case SDL_BUTTON_LEFT:
+				astar = new AStar(this, mCollisionMap);
+				astar->Tick();
+				break;
+			}
+		}
+		break;
+	}
+	if (astar->finalpath.size() > 0)
+	{
+		x = astar->finalpath.back().position.x;
+		y = astar->finalpath.back().position.y;
+		if (Vec2DDistance(Vector2D(x, y), this->GetCentralPosition()) < 30)
+		{
+			astar->finalpath.pop_back();
+		}
+	}
+	if (x == 0 && y == 0)
+		return;
+	std::cout << Vec2DDistance(Vector2D(x, y), this->GetCentralPosition())  << "\n";
+		/*SEEK START*/
+	float radian = (atan2(y - this->GetCentralPosition().y, x - this->GetCentralPosition().x));
 	Vector2D toTarget = Vec2DNormalize(GetCentralPosition() - Vector2D(x,y));
-
-	//Determine the angle between the heading vector and the target.
 	double angle = acos(mHeading.Dot(toTarget));
-
-	//Ensure angle does not become NaN and cause the tank to disappear.
 	if (angle != angle)
 		angle = 0.0f;
-
-	//Return true if the player is facing the target.
-	//std::cout << "angle = " << angle << "\n";
 	if (angle > 3)
 	{
 
 	
-		if (Vec2DDistance(Vector2D(x, y), this->GetPosition()) > 50)
+		if (Vec2DDistance(Vector2D(x, y), this->GetCentralPosition()) > 30)
 		{
 			mCurrentSpeed += kSpeedIncrement * deltaTime;
 			if (mCurrentSpeed > GetMaxSpeed())
@@ -82,6 +101,8 @@ void b023200hTank::Update(float deltaTime, SDL_Event e)
 	}
 
 		RotateHeadingToFacePosition(Vector2D(x, y), -19);
+
+		/*SEEK END*/
 		
 }
 
@@ -141,6 +162,16 @@ void b023200hTank::RotateHeadingByRadian(double radian, int sign)
 
 void b023200hTank::Render()
 {
+
+	if (astar->finalpath.size() > 0)
+	{
+
+		//for (ANode node : astar->finalpath)
+		////{
+		///	DrawDebugCircle(node.position, 16, 255, 1, 1);
+			DrawDebugCircle(astar->finalpath.back().position, 16, 255, 255, 1);
+		//}
+	}
 	for (int i = 0; i < astar->NodeLen(); i++)
 	{
 		if(astar->getNode(i).Starting )

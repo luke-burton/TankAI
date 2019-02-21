@@ -24,7 +24,7 @@ public:
 	//---------------------------------------------------------------
 protected:
 	void	MoveInHeadingDirection(float deltaTime);
-
+	int x = 0, y = 0;
 	class AStar* astar;
 };
 

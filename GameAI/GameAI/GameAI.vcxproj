@@ -66,7 +66,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="AStar.h" />
     <ClInclude Include="BaseTank.h" />
     <ClInclude Include="C2DMatrix.h" />
     <ClInclude Include="Commons.h" />
@@ -83,6 +82,7 @@
     <ClInclude Include="PickUpManager.h" />
     <ClInclude Include="Projectile.h" />
     <ClInclude Include="ProjectileManager.h" />
+    <ClInclude Include="StudentTanks\b023200h\AStar.h" />
     <ClInclude Include="StudentTanks\b023200h\b023200hTank.h" />
     <ClInclude Include="TankManager.h" />
     <ClInclude Include="TestTank.h" />

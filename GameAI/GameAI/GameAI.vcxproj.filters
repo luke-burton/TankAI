@@ -96,7 +96,7 @@
     <ClInclude Include="StudentTanks\b023200h\b023200hTank.h">
       <Filter>StudentTanks</Filter>
     </ClInclude>
-    <ClInclude Include="AStar.h">
+    <ClInclude Include="StudentTanks\b023200h\AStar.h">
       <Filter>StudentTanks</Filter>
     </ClInclude>
   </ItemGroup>
