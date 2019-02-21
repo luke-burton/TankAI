@@ -1,0 +1,4 @@
+﻿  AStar.cpp
+c:\users\b023200h.student\desktop\student tank framework\gameai\gameai\astar.cpp(35): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+c:\users\b023200h.student\desktop\student tank framework\gameai\gameai\astar.cpp(46): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+  GameAI.vcxproj -> C:\Users\b023200h.STUDENT\Desktop\Student Tank Framework\GameAI\Debug\GameAI.exe
