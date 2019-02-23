@@ -9,7 +9,10 @@
 #include <thread>
 #include "../../Commons.h"
 
-
+enum Steering
+{
+	SEEK = 1, ARRIVE = 2, AVOIDOB = 3, PURSUIT = 4,
+};
 //---------------------------------------------------------------
 
 class b023200hTank : public BaseTank
@@ -25,6 +28,8 @@ public:
 	void Render();
 	void RotateHeadingByRadian(double radian, int sign);
 	void DrawCircle(Vector2D pos);
+	Steering GetLowPrior() { return LowPriorBehavior; }
+	Vector2D GetTargetPos() { return TargLastSeen;  }
 	//---------------------------------------------------------------
 protected:
 	void	MoveInHeadingDirection(float deltaTime);
@@ -32,6 +37,9 @@ protected:
 	class AStar* astar;
 	void findpath();
 	std::thread t1;
+	Steering LowPriorBehavior;
+	void RunLowPrior(float deltaTime);
+	Vector2D TargLastSeen;
 };
 
 //---------------------------------------------------------------

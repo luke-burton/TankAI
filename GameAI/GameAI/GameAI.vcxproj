@@ -93,7 +93,6 @@
     <ClInclude Include="WaypointManager.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="AStar.cpp" />
     <ClCompile Include="BaseTank.cpp" />
     <ClCompile Include="ControlledTank.cpp" />
     <ClCompile Include="DumbTank.cpp" />
@@ -108,6 +107,7 @@
     <ClCompile Include="Projectile.cpp" />
     <ClCompile Include="ProjectileManager.cpp" />
     <ClCompile Include="Source.cpp" />
+    <ClCompile Include="StudentTanks\b023200h\AStar.cpp" />
     <ClCompile Include="StudentTanks\b023200h\b023200hTank.cpp" />
     <ClCompile Include="TankManager.cpp" />
     <ClCompile Include="TestTank.cpp" />

@@ -173,7 +173,7 @@
     <ClCompile Include="StudentTanks\b023200h\b023200hTank.cpp">
       <Filter>StudentTanks</Filter>
     </ClCompile>
-    <ClCompile Include="AStar.cpp">
+    <ClCompile Include="StudentTanks\b023200h\AStar.cpp">
       <Filter>StudentTanks</Filter>
     </ClCompile>
   </ItemGroup>
