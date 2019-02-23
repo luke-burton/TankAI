@@ -119,20 +119,22 @@ void b023200hTank::Update(float deltaTime, SDL_Event e)
 			switch (e.button.button)
 			{
 			case SDL_BUTTON_RIGHT:
-				std::cout << "click" << "\n";
 				LowPriorBehavior = SEEK;
 				astar = new AStar(this, mCollisionMap);
 				astar->Tick();
-				/*if (LowPriorBehavior != PURSUIT)
+				break;
+			case SDL_BUTTON_LEFT:
+				if (LowPriorBehavior != PURSUIT)
 					LowPriorBehavior = PURSUIT;
 				else
 					LowPriorBehavior = SEEK;
-					*/
 				break;
 			}
 		}
 	break;
 	}
+
+
 	if (astar->finalpath.size() > 0)
 	{
 		x = astar->finalpath.back().position.x;
@@ -142,7 +144,7 @@ void b023200hTank::Update(float deltaTime, SDL_Event e)
 			astar->finalpath.pop_back();
 		}
 	}
-	if (x == 0 && y == 0)
+	if (x == 0 && y == 0 )
 		return;
 	RunLowPrior(deltaTime);
 	mCurrentSpeed -= 1 * deltaTime;		
@@ -163,7 +165,6 @@ void b023200hTank::MoveInHeadingDirection(float deltaTime)
 
 	//Don't allow the tank does not go faster than max speed.
 	mVelocity.Truncate(GetMaxSpeed()); //TODO: Add Penalty for going faster than MAX Speed.
-
 									   //Finally, update the position.
 	Vector2D newPosition = GetPosition();
 	newPosition.x += mVelocity.x*deltaTime;

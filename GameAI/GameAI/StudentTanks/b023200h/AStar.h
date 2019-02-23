@@ -7,11 +7,12 @@
 struct ANode
 {
 	bool Starting, Ending, isClosed;
-	int MyNumber, LastNumber, InPath;
+	int MyNumber, LastNumber;
+	int dir;//0 = up, 1 = down, 2 = left, 3 = right
 	Vector2D position;
 	ANode()
 	{
-		InPath = false;
+		dir = 0;
 		Starting = false;
 		Ending = false;
 		isClosed = false;
@@ -21,7 +22,7 @@ struct ANode
 	}
 	ANode(ANode& old)
 	{
-		InPath = old.InPath;
+		dir = old.dir;
 		Starting = old.Starting;
 		Ending = old.Ending;
 		isClosed = old.isClosed;
@@ -31,7 +32,7 @@ struct ANode
 	}
 	ANode(int X, int Y, int N)
 	{
-		InPath = false;
+		dir = 0;
 		MyNumber = N;
 		LastNumber = 0;
 		isClosed = false;
@@ -41,7 +42,7 @@ struct ANode
 	}
 	ANode(int X, int Y)
 	{
-		InPath = false;
+		dir = 0;
 		MyNumber = 0;
 		LastNumber = 0;
 		isClosed = false;
@@ -70,25 +71,27 @@ class AStar
 
 private:
 	TileType world[kMapWidth][kMapHeight];
+	void MapWorld();
+	void FindClosestToSandE();
+	void Reset();
+	void FindNeighbours();
+	void FindBestNeighbour();
 protected:
 	std::vector<ANode> nodes;//list of all nodes
-
 	std::vector<int> neighbours;//list of neighbours
 	class b023200hTank* myself;//refence to my tank
-	Vector2D endpos;//TEMP 
+	Vector2D endpos;
 	bool pathfound = false;//
+	int bestsofar = 0;
 	int current;//current node
 	int end;//end node
 	int start;//starting node
 public:
 	std::vector<ANode> finalpath;//list of all path nodes
-	void MapWorld();
 	int NodeLen() { return nodes.size() - 1; }
 	ANode getNode(int i) { return nodes.at(i); }
-	void FindClosestToSandE();
-	void Reset();
-	void FindNeighbours();
-	void FindBestNeighbour();
+
+
 	void Tick();
 
 	AStar(b023200hTank* tank,TileType map[kMapWidth][kMapHeight]);

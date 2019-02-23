@@ -39,7 +39,7 @@ void AStar::Tick()
 	}
 	
 	int next = end;
-	for (int is = 0; is < 1000; is++)
+	for (int is = 0; is < 100; is++)
 	{
 		if (next == start)
 			break;
@@ -48,6 +48,7 @@ void AStar::Tick()
 	
 
 	}
+
 }
 
 void AStar::MapWorld()
@@ -68,31 +69,56 @@ void AStar::MapWorld()
 
 void AStar::FindBestNeighbour()
 {
-	float bestDist = 9999;
+	float bestDist = 99999;
 	int bestN = 0;
 	int neigh = -1;
 	int bestneigh = 0;
 	for (int i : neighbours)
 	{
 		neigh++;
-		float DistToC = nodes.at(current).position.Distance(nodes.at(i).position);
-		float DistToE = nodes.at(end).position.Distance(nodes.at(i).position);
-		float DistToS = nodes.at(start).position.Distance(nodes.at(i).position);
-		if (DistToC + DistToE <= bestDist)
+		float extra = 0;
+		if (nodes.at(i).dir != nodes.at(current).dir)
+			extra = 30;
+		float DistToC = (float)nodes.at(current).position.Distance(nodes.at(i).position);
+		float DistToE = (float)nodes.at(end).position.Distance(nodes.at(i).position);
+		float DistToS = (float)nodes.at(start).position.Distance(nodes.at(i).position);
+		if (DistToC + DistToE + extra <= bestDist)
 		{
-			bestDist = DistToC + DistToE;
+			bestDist = DistToC + DistToE + extra;
 			bestN = i;
 			bestneigh = neigh;
+			if (bestN == end && bestsofar == 0)
+				bestsofar = bestDist;
+			
 		}
 	
 	}
 	if (bestN == end)
 	{
-		nodes.at(end).LastNumber = bestN;
+		nodes.at(end).LastNumber = current;
+		neighbours.erase(neighbours.begin() + bestneigh);
+		std::cout << "end found " << " last num = " << nodes.at(end).LastNumber << " \n ";
+		if (bestsofar != 0 && bestsofar < bestDist)
+		{
+			pathfound = true;
+			return;
+		}
+		if (neighbours.size() == 0)
+		{
+			pathfound = true;
+			return;
+		}
+		return;
+	}
+	if (bestsofar != 0 && bestsofar < bestDist)
+	{
 		pathfound = true;
 	}
-	//finalpath.push_back(ANode(nodes.at(bestN)));
-	//std::this_thread::sleep_for(std::chrono::milliseconds(600));
+	if (neighbours.size() == 0)
+	{
+		pathfound = true;
+		return;
+	}
 	nodes.at(bestN).LastNumber = current;
 	neighbours.erase(neighbours.begin() + bestneigh);
 	current = bestN;
@@ -103,13 +129,13 @@ void AStar::FindNeighbours()
 {
 	ANode currentN = nodes.at(current);
 	int f = 0;
-
 	if (std::find(nodes.begin(), nodes.end(), ANode(currentN.position.x + 32, currentN.position.y)) != nodes.end())
 	{
 		f = std::find(nodes.begin(), nodes.end(), ANode(currentN.position.x + 32, currentN.position.y))._Ptr->MyNumber;
 		if (!nodes.at(f).isClosed)
 		{
-
+			//finalpath.push_back(ANode(nodes.at(f)));
+			nodes.at(f).dir = 1;
 			nodes.at(f).isClosed = true;
 			neighbours.push_back(f);
 		}
@@ -119,6 +145,8 @@ void AStar::FindNeighbours()
 		f = std::find(nodes.begin(), nodes.end(), ANode(currentN.position.x - 32, currentN.position.y))._Ptr->MyNumber;
 		if (!nodes.at(f).isClosed)
 		{
+			//finalpath.push_back(ANode(nodes.at(f)));
+			nodes.at(f).dir = 0;
 			nodes.at(f).isClosed = true;
 			neighbours.push_back(f);
 		}
@@ -128,6 +156,8 @@ void AStar::FindNeighbours()
 		f = std::find(nodes.begin(), nodes.end(), ANode(currentN.position.x , currentN.position.y + 32))._Ptr->MyNumber;
 		if (!nodes.at(f).isClosed)
 		{
+		//finalpath.push_back(ANode(nodes.at(f)));
+			nodes.at(f).dir = 3;
 			nodes.at(f).isClosed = true;
 			neighbours.push_back(f);
 		}
@@ -137,6 +167,8 @@ void AStar::FindNeighbours()
 		f = std::find(nodes.begin(), nodes.end(), ANode(currentN.position.x , currentN.position.y - 32 ))._Ptr->MyNumber;
 		if (!nodes.at(f).isClosed)
 		{
+		//finalpath.push_back(ANode(nodes.at(f)));
+			nodes.at(f).dir = 2;
 			nodes.at(f).isClosed = true;
 			neighbours.push_back(f);
 		}
@@ -152,7 +184,7 @@ void AStar::Reset()
 	end = 0;
 	neighbours.empty();
 	finalpath.empty();
-	for (int i = 0; i < nodes.size(); i++)
+	for (unsigned int i = 0; i < nodes.size(); i++)
 	{
 		nodes.at(i).isClosed = false;
 		nodes.at(i).Ending = false;
