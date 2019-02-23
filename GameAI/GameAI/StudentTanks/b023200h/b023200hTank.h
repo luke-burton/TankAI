@@ -4,7 +4,11 @@
 #include "../../BaseTank.h"
 #include <SDL.h>
 #include "AStar.h"
+#include <string>
+#include <iostream>
+#include <thread>
 #include "../../Commons.h"
+
 
 //---------------------------------------------------------------
 
@@ -26,6 +30,8 @@ protected:
 	void	MoveInHeadingDirection(float deltaTime);
 	int x = 0, y = 0;
 	class AStar* astar;
+	void findpath();
+	std::thread t1;
 };
 
 //---------------------------------------------------------------

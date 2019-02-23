@@ -8,9 +8,10 @@
 b023200hTank::b023200hTank(SDL_Renderer* renderer, TankSetupDetails details) 
 	: BaseTank(renderer, details)
 {
-	astar = new AStar(this,mCollisionMap);
-
-
+	astar = new AStar(this, mCollisionMap);
+	//t1 = thread(&b023200hTank::findpath, this);
+	//t1.join();
+	//t1.detach();
 }
 
 //--------------------------------------------------------------------------------------------------
@@ -32,6 +33,18 @@ void b023200hTank::ChangeState(BASE_TANK_STATE newState)
 
 //--------------------------------------------------------------------------------------------------
 
+void b023200hTank::findpath()
+{
+
+	while (true) {
+		std::cout << "Thread 1 executing\n";
+		astar = new AStar(this, mCollisionMap);
+		astar->Tick();
+		std::this_thread::sleep_for(std::chrono::milliseconds(600));
+	}
+	
+	
+}
 void b023200hTank::Update(float deltaTime, SDL_Event e)
 {
 	BaseTank::Update(deltaTime, e);
@@ -49,6 +62,7 @@ void b023200hTank::Update(float deltaTime, SDL_Event e)
 			case SDL_BUTTON_LEFT:
 				astar = new AStar(this, mCollisionMap);
 				astar->Tick();
+				FireABullet();
 				break;
 			}
 		}
@@ -58,7 +72,7 @@ void b023200hTank::Update(float deltaTime, SDL_Event e)
 	{
 		x = astar->finalpath.back().position.x;
 		y = astar->finalpath.back().position.y;
-		if (Vec2DDistance(Vector2D(x, y), this->GetCentralPosition()) < 30)
+		if (Vec2DDistance(Vector2D(x, y), this->GetCentralPosition()) < 40)
 		{
 			astar->finalpath.pop_back();
 		}
@@ -76,7 +90,7 @@ void b023200hTank::Update(float deltaTime, SDL_Event e)
 	{
 
 	
-		if (Vec2DDistance(Vector2D(x, y), this->GetCentralPosition()) > 30)
+		if (Vec2DDistance(Vector2D(x, y), this->GetCentralPosition()) > 40)
 		{
 			mCurrentSpeed += kSpeedIncrement * deltaTime;
 			if (mCurrentSpeed > GetMaxSpeed())
@@ -96,12 +110,27 @@ void b023200hTank::Update(float deltaTime, SDL_Event e)
 	{
 		if (mCurrentSpeed > 0)
 			mCurrentSpeed -= kSpeedIncrement * deltaTime;
+		if (mCurrentSpeed > 0)
+			mCurrentSpeed -= kSpeedIncrement * deltaTime;
 		if (mCurrentSpeed < 0)
 			mCurrentSpeed = 0;
 	}
+	mCurrentSpeed += 1 * deltaTime;
+	RotateHeadingToFacePosition(Vector2D(x, y), -deltaTime);
+	
 
-		RotateHeadingToFacePosition(Vector2D(x, y), -19);
+	 radian = (atan2(y - mManFireDirection.y, x - mManFireDirection.x));
+	 toTarget = Vec2DNormalize(mManFireDirection - Vector2D(x, y));
+	 angle = acos(mHeading.Dot(toTarget));
+	if (angle != angle)
+		angle = 0.0f;
+	std::cout << "angle = " << angle << "\n";
+	if (angle > 0.76)
+	{
+		RotateManByRadian(55, 1, deltaTime);
+	}
 
+	
 		/*SEEK END*/
 		
 }
@@ -163,6 +192,13 @@ void b023200hTank::RotateHeadingByRadian(double radian, int sign)
 void b023200hTank::Render()
 {
 
+
+	if (mTanksICanSee.size() > 0)
+	{
+		//mTanksICanSee.front()->SetPosition(Vector2D(1, 1));
+	//	DrawDebugLine(mTanksICanSee.front()->GetHeading(), mTanksICanSee.front()->GetHeading(), 255, 1, 255);
+		
+	}
 	if (astar->finalpath.size() > 0)
 	{
 
@@ -171,6 +207,7 @@ void b023200hTank::Render()
 		///	DrawDebugCircle(node.position, 16, 255, 1, 1);
 			DrawDebugCircle(astar->finalpath.back().position, 16, 255, 255, 1);
 		//}
+
 	}
 	for (int i = 0; i < astar->NodeLen(); i++)
 	{

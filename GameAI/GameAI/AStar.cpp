@@ -23,7 +23,7 @@ AStar::~AStar()
 void AStar::Tick()
 {
 
-	//Reset();
+	Reset();
 	FindClosestToSandE();
 
 	int loops = 1;
