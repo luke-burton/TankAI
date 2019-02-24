@@ -50,15 +50,15 @@ void b023200hTank::findpath()
 void b023200hTank::RunLowPrior(float deltaTime)
 {
 	float radian = (atan2(y - this->GetCentralPosition().y, x - this->GetCentralPosition().x));
-	Vector2D toTarget = Vec2DNormalize(Vector2D(x, y) - GetCentralPosition() );
+	Vector2D toTarget = Vec2DNormalize( GetCentralPosition() - Vector2D(x,y) );
 	double angle = acos(mHeading.Dot(toTarget));
 	if (angle != angle)
 		angle = 0.0f;
 
-	//std::cout << "angle = " << angle << " \n";
+	std::cout << "angle = " << angle << " \n";
 	if (LowPriorBehavior != PURSUIT)
 	{
-		if (Vec2DDistance(Vector2D(x, y), this->GetCentralPosition()) <= 50 || angle < 3)
+		if (Vec2DDistance(Vector2D(x, y), this->GetCentralPosition()) <= 35 ||  angle >  0.1)
 			LowPriorBehavior = ARRIVE;
 		else
 			LowPriorBehavior = SEEK;
@@ -68,8 +68,9 @@ void b023200hTank::RunLowPrior(float deltaTime)
 	case SEEK:
 		//std::cout << "behavior = seek \n"<< " max speed = " << GetMaxSpeed() << "\n";
 			mCurrentSpeed -= (kSpeedIncrement  * Vec2DDistance(Vector2D(x, y), this->GetCentralPosition())) * deltaTime;
-			if (mCurrentSpeed < -GetMaxSpeed())
-				mCurrentSpeed = -GetMaxSpeed();
+			if (mCurrentSpeed < -GetMaxSpeed() / 2)
+				mCurrentSpeed = -GetMaxSpeed() / 2;
+				RotateHeadingToFacePosition(Vector2D(x, y), deltaTime);
 		break;
 	case ARRIVE:
 		//std::cout << "behavior = arrive \n";
@@ -86,7 +87,7 @@ void b023200hTank::RunLowPrior(float deltaTime)
 		break;
 	case PURSUIT:
 		//std::cout << "behavior = pursuit \n" << " max speed = " << GetMaxSpeed() << "\n";
-		if (Vec2DDistance(Vector2D(x, y), this->GetCentralPosition()) <= 50 || angle < 3) 
+		if (Vec2DDistance(Vector2D(x, y), this->GetCentralPosition()) <= 35 || angle < 0.95) 
 		{
 			if (mCurrentSpeed < 0)
 				mCurrentSpeed += (kSpeedIncrement  * Vec2DDistance(Vector2D(x, y), this->GetCentralPosition())) * deltaTime;
@@ -104,6 +105,8 @@ void b023200hTank::RunLowPrior(float deltaTime)
 void b023200hTank::Update(float deltaTime, SDL_Event e)
 {
 	BaseTank::Update(deltaTime, e);
+
+
 	if (mTanksICanSee.size() > 0)
 	{
 		TargLastSeen = mTanksICanSee[0]->GetCentralPosition();
@@ -128,6 +131,9 @@ void b023200hTank::Update(float deltaTime, SDL_Event e)
 					LowPriorBehavior = PURSUIT;
 				else
 					LowPriorBehavior = SEEK;
+				astar = new AStar(this, mCollisionMap);
+				astar->Tick();
+
 				break;
 			}
 		}
@@ -139,7 +145,7 @@ void b023200hTank::Update(float deltaTime, SDL_Event e)
 	{
 		x = astar->finalpath.back().position.x;
 		y = astar->finalpath.back().position.y;
-		if (Vec2DDistance(Vector2D(x, y), this->GetCentralPosition()) <= 50)
+		if (Vec2DDistance(Vector2D(x, y), this->GetCentralPosition()) <= 34)
 		{
 			astar->finalpath.pop_back();
 		}
@@ -206,9 +212,14 @@ void b023200hTank::RotateHeadingByRadian(double radian, int sign)
 void b023200hTank::Render()
 {
 	
-
+	if (astar->finalpath.size() > 0)
+	{
+		DrawDebugLine(this->GetCentralPosition(), astar->finalpath.back().position, 255, 1, 1);
+	}
 	for (ANode node : astar->finalpath)
 	{
+
+		DrawDebugCircle(node.position, 35, 1, 255, 1);
 		DrawDebugCircle(node.position, 16, 255, 1, 1);
 	}
 	

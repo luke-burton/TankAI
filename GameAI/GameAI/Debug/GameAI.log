@@ -1,15 +1,5 @@
-﻿  AStar.cpp
-c:\users\b023200h\documents\github\tankai\gameai\gameai\studenttanks\b023200h\astar.cpp(91): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-c:\users\b023200h\documents\github\tankai\gameai\gameai\studenttanks\b023200h\astar.cpp(132): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
-c:\users\b023200h\documents\github\tankai\gameai\gameai\studenttanks\b023200h\astar.cpp(134): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
-c:\users\b023200h\documents\github\tankai\gameai\gameai\studenttanks\b023200h\astar.cpp(143): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
-c:\users\b023200h\documents\github\tankai\gameai\gameai\studenttanks\b023200h\astar.cpp(145): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
-c:\users\b023200h\documents\github\tankai\gameai\gameai\studenttanks\b023200h\astar.cpp(154): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
-c:\users\b023200h\documents\github\tankai\gameai\gameai\studenttanks\b023200h\astar.cpp(156): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
-c:\users\b023200h\documents\github\tankai\gameai\gameai\studenttanks\b023200h\astar.cpp(165): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
-c:\users\b023200h\documents\github\tankai\gameai\gameai\studenttanks\b023200h\astar.cpp(167): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
-c:\users\b023200h\documents\github\tankai\gameai\gameai\studenttanks\b023200h\astar.cpp(207): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
-c:\users\b023200h\documents\github\tankai\gameai\gameai\studenttanks\b023200h\astar.cpp(208): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
-c:\users\b023200h\documents\github\tankai\gameai\gameai\studenttanks\b023200h\astar.cpp(222): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
-c:\users\b023200h\documents\github\tankai\gameai\gameai\studenttanks\b023200h\astar.cpp(233): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+﻿  b023200hTank.cpp
+c:\users\b023200h\documents\github\tankai\gameai\gameai\studenttanks\b023200h\b023200htank.cpp(52): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+c:\users\b023200h\documents\github\tankai\gameai\gameai\studenttanks\b023200h\b023200htank.cpp(146): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+c:\users\b023200h\documents\github\tankai\gameai\gameai\studenttanks\b023200h\b023200htank.cpp(147): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
   GameAI.vcxproj -> C:\Users\b023200h\Documents\GitHub\TankAI\GameAI\Debug\GameAI.exe

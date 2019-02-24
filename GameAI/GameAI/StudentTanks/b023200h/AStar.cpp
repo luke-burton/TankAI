@@ -12,7 +12,7 @@ AStar::AStar(b023200hTank* tank,TileType map[kMapWidth][kMapHeight])
 		}
 	}
 	MapWorld();
-
+	
 }
 
 
@@ -39,12 +39,22 @@ void AStar::Tick()
 	}
 	
 	int next = end;
+	int last = end;
+	finalpath.push_back(ANode(nodes.at(end)));
 	for (int is = 0; is < 100; is++)
 	{
 		if (next == start)
+		{
+			finalpath.push_back(ANode(nodes.at(next)));
 			break;
-		finalpath.push_back(ANode(nodes.at(next)));
-		next = nodes.at(next).LastNumber;
+		}
+		
+		if(nodes.at(next).dir != nodes.at(last).dir)
+		{ 
+			finalpath.push_back(ANode(nodes.at(next)));		
+		}
+			last = next;
+			next = nodes.at(next).LastNumber;
 	
 
 	}
@@ -77,12 +87,13 @@ void AStar::FindBestNeighbour()
 	{
 		neigh++;
 		float extra = 0;
-		if (nodes.at(i).dir != nodes.at(current).dir)
-			extra = 30;
+		
 		float DistToC = (float)nodes.at(current).position.Distance(nodes.at(i).position);
 		float DistToE = (float)nodes.at(end).position.Distance(nodes.at(i).position);
 		float DistToS = (float)nodes.at(start).position.Distance(nodes.at(i).position);
-		if (DistToC + DistToE + extra <= bestDist)
+		if (nodes.at(i).dir != nodes.at(nodes.at(i).LastNumber).dir)
+			extra = DistToC;
+		if (DistToC + DistToE  + extra <= bestDist)
 		{
 			bestDist = DistToC + DistToE + extra;
 			bestN = i;
@@ -135,6 +146,7 @@ void AStar::FindNeighbours()
 		if (!nodes.at(f).isClosed)
 		{
 			//finalpath.push_back(ANode(nodes.at(f)));
+			nodes.at(f).LastNumber = current;
 			nodes.at(f).dir = 1;
 			nodes.at(f).isClosed = true;
 			neighbours.push_back(f);
@@ -145,6 +157,7 @@ void AStar::FindNeighbours()
 		f = std::find(nodes.begin(), nodes.end(), ANode(currentN.position.x - 32, currentN.position.y))._Ptr->MyNumber;
 		if (!nodes.at(f).isClosed)
 		{
+			nodes.at(f).LastNumber = current;
 			//finalpath.push_back(ANode(nodes.at(f)));
 			nodes.at(f).dir = 0;
 			nodes.at(f).isClosed = true;
@@ -156,6 +169,7 @@ void AStar::FindNeighbours()
 		f = std::find(nodes.begin(), nodes.end(), ANode(currentN.position.x , currentN.position.y + 32))._Ptr->MyNumber;
 		if (!nodes.at(f).isClosed)
 		{
+			nodes.at(f).LastNumber = current;
 		//finalpath.push_back(ANode(nodes.at(f)));
 			nodes.at(f).dir = 3;
 			nodes.at(f).isClosed = true;
@@ -167,6 +181,7 @@ void AStar::FindNeighbours()
 		f = std::find(nodes.begin(), nodes.end(), ANode(currentN.position.x , currentN.position.y - 32 ))._Ptr->MyNumber;
 		if (!nodes.at(f).isClosed)
 		{
+			nodes.at(f).LastNumber = current;
 		//finalpath.push_back(ANode(nodes.at(f)));
 			nodes.at(f).dir = 2;
 			nodes.at(f).isClosed = true;

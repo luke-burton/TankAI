@@ -40,6 +40,8 @@ protected:
 	Steering LowPriorBehavior;
 	void RunLowPrior(float deltaTime);
 	Vector2D TargLastSeen;
+
+	int startT;
 };
 
 //---------------------------------------------------------------
