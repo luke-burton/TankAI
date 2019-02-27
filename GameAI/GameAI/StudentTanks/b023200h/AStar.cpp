@@ -40,17 +40,20 @@ void AStar::Tick()
 	
 	int next = end;
 	int last = end;
+	int lastpathadded = 0;
 	finalpath.push_back(ANode(nodes.at(end)));
 	for (int is = 0; is < 100; is++)
 	{
+		lastpathadded++;
 		if (next == start)
 		{
-			finalpath.push_back(ANode(nodes.at(next)));
+			//finalpath.push_back(ANode(nodes.at(next)));
 			break;
 		}
 		std::cout << nodes.at(next).dir << " : " << nodes.at(last).dir << "\n";
-		if(nodes.at(next).dir != nodes.at(last).dir)
+		if(nodes.at(next).dir != nodes.at(last).dir || lastpathadded >= 3) 
 		{ 
+			lastpathadded = 0;
 			finalpath.push_back(ANode(nodes.at(next)));		
 			next = nodes.at(next).LastNumber;
 			last = next;
@@ -96,7 +99,7 @@ void AStar::FindBestNeighbour()
 		float DistToE = (float)nodes.at(end).position.Distance(nodes.at(i).position);
 		float DistToS = (float)nodes.at(start).position.Distance(nodes.at(i).position);
 		if (nodes.at(i).dir != nodes.at(nodes.at(i).LastNumber).dir && nodes.at(i).LastNumber != start)
-			extra = DistToC + 10;
+			extra = 5 ;
 		if (DistToC + DistToE  + extra <= bestDist)
 		{
 			bestDist = DistToC + DistToE + extra;
@@ -135,6 +138,8 @@ void AStar::FindBestNeighbour()
 		return;
 	}
 	nodes.at(bestN).LastNumber = current;
+	nodes.at(bestN).lastdist = bestDist;
+//	nodes.at(bestN).isClosed = false;
 	neighbours.erase(neighbours.begin() + bestneigh);
 	current = bestN;
 
@@ -206,8 +211,6 @@ void AStar::Reset()
 	for (unsigned int i = 0; i < nodes.size(); i++)
 	{
 		nodes.at(i).isClosed = false;
-		nodes.at(i).Ending = false;
-		nodes.at(i).Starting = false;
 		nodes.at(i).LastNumber = 0;
 	}
 }
@@ -254,6 +257,5 @@ void AStar::FindClosestToSandE()
 	}
 
 	current = start;
-	nodes.at(start).Starting = true;
-	nodes.at(end).Ending = true;
+
 }

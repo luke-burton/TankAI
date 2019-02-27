@@ -8,8 +8,10 @@
 b023200hTank::b023200hTank(SDL_Renderer* renderer, TankSetupDetails details) 
 	: BaseTank(renderer, details)
 {
+	LowPriorBehavior = SEEK;
 	astar = new AStar(this, mCollisionMap);
-	//t1 = thread(&b023200hTank::findpath, this);
+
+	
 	//t1.join();
 	//t1.detach();
 
@@ -37,18 +39,22 @@ void b023200hTank::ChangeState(BASE_TANK_STATE newState)
 
 void b023200hTank::findpath()
 {
-	return;
-	while (true) {
-		astar = new AStar(this, mCollisionMap);
-		astar->Tick();
-		std::this_thread::sleep_for(std::chrono::milliseconds(600));
-	}
+	
+	//while (true) {
+		//LowPriorBehavior = SEEK;
+		//astar = new AStar(this, mCollisionMap);
+	//	astar->Tick();
+	//	std::this_thread::sleep_for(std::chrono::milliseconds(600));
+	//}
 	
 	
 }
 
 void b023200hTank::RunLowPrior(float deltaTime)
 {
+
+
+
 	float radian = (atan2(y - this->GetCentralPosition().y, x - this->GetCentralPosition().x));
 	Vector2D toTarget = Vec2DNormalize( GetCentralPosition() - Vector2D(x,y) );
 	double angle = acos(mHeading.Dot(toTarget));
@@ -71,6 +77,8 @@ void b023200hTank::RunLowPrior(float deltaTime)
 			if (mCurrentSpeed < -GetMaxSpeed() / 2)
 				mCurrentSpeed = -GetMaxSpeed() / 2;
 				RotateHeadingToFacePosition(Vector2D(x, y), deltaTime);
+				RotateHeadingToFacePosition(Vector2D(x, y), deltaTime);
+				RotateHeadingToFacePosition(Vector2D(x, y), deltaTime);
 		break;
 	case ARRIVE:
 		//std::cout << "behavior = arrive \n";
@@ -79,6 +87,8 @@ void b023200hTank::RunLowPrior(float deltaTime)
 		if (mCurrentSpeed > 0)
 			mCurrentSpeed = 0;
 
+		RotateHeadingToFacePosition(Vector2D(x, y), deltaTime);
+		RotateHeadingToFacePosition(Vector2D(x, y), deltaTime);
 		RotateHeadingToFacePosition(Vector2D(x, y), deltaTime);
 		break;
 
@@ -106,7 +116,7 @@ void b023200hTank::Update(float deltaTime, SDL_Event e)
 {
 	BaseTank::Update(deltaTime, e);
 
-
+	SDL_GetMouseState(&x, &y);
 	if (mTanksICanSee.size() > 0)
 	{
 		TargLastSeen = mTanksICanSee[0]->GetCentralPosition();
@@ -123,16 +133,16 @@ void b023200hTank::Update(float deltaTime, SDL_Event e)
 			{
 			case SDL_BUTTON_RIGHT:
 				LowPriorBehavior = SEEK;
-				astar = new AStar(this, mCollisionMap);
-				astar->Tick();
+				//astar = new AStar(this, mCollisionMap);
+				//astar->Tick();
 				break;
 			case SDL_BUTTON_LEFT:
 				if (LowPriorBehavior != PURSUIT)
 					LowPriorBehavior = PURSUIT;
 				else
 					LowPriorBehavior = SEEK;
-				astar = new AStar(this, mCollisionMap);
-				astar->Tick();
+				//astar = new AStar(this, mCollisionMap);
+				//astar->Tick();
 
 				break;
 			}
@@ -141,15 +151,6 @@ void b023200hTank::Update(float deltaTime, SDL_Event e)
 	}
 
 
-	if (astar->finalpath.size() > 0)
-	{
-		x = astar->finalpath.back().position.x;
-		y = astar->finalpath.back().position.y;
-		if (Vec2DDistance(Vector2D(x, y), this->GetCentralPosition()) <= 34)
-		{
-			astar->finalpath.pop_back();
-		}
-	}
 	if (x == 0 && y == 0 )
 		return;
 	RunLowPrior(deltaTime);
@@ -211,17 +212,42 @@ void b023200hTank::RotateHeadingByRadian(double radian, int sign)
 
 void b023200hTank::Render()
 {
+	int fuck = 30;
+	Vector2D right = Vector2D(fuck / 1.3, 0) + GetCentralPosition();
+	Vector2D left = Vector2D(-fuck / 1.3, 0) + GetCentralPosition();	
+	Vector2D up = Vector2D(0,fuck) + GetCentralPosition();
+	Vector2D down = Vector2D(0,-fuck) + GetCentralPosition();
 	
-	if (astar->finalpath.size() > 0)
+	int object = 0;
+	for (GameObject* fucks : ObstacleManager::Instance()->GetObstacles())
 	{
-		DrawDebugLine(this->GetCentralPosition(), astar->finalpath.back().position, 255, 1, 1);
-	}
-	for (ANode node : astar->finalpath)
-	{
+		if (object == 0)
+			continue;
+		if (object == 1)
+		{
+			Vector2D newpos = fucks->GetCentralPosition() + Vector2D(fucks->GetCollisionRadius(), -fucks->GetCollisionRadius());
+			Vector2D newpos1 = fucks->GetCentralPosition() + Vector2D(-fucks->GetCollisionRadius(), fucks->GetCollisionRadius());
+			Vector2D newpos2 = fucks->GetCentralPosition() + Vector2D(fucks->GetCollisionRadius(), fucks->GetCollisionRadius());
+			Vector2D newpos3 = fucks->GetCentralPosition() + Vector2D(-fucks->GetCollisionRadius(), -fucks->GetCollisionRadius());
+			DrawDebugLine(newpos3, newpos1, 0, 255, 0);
+			DrawDebugLine(newpos1, newpos2, 0, 255, 0);
+			DrawDebugLine(newpos2, newpos, 0, 255, 0);
+			DrawDebugLine(newpos, newpos3, 0, 255, 0);
 
-		DrawDebugCircle(node.position, 35, 1, 255, 1);
-		DrawDebugCircle(node.position, 16, 255, 1, 1);
-	}
+		}
+		object++;
 	
+	}
+	/*
+	if(!shit)
+		DrawDebugLine(GetCentralPosition() + Vector2D(fuck / 2,0), right, 0, 255, 0);
+	else
+		DrawDebugLine(GetCentralPosition() + Vector2D(fuck / 2, 0), right, 255, 0, 0);
+	DrawDebugLine(GetCentralPosition() - Vector2D(fuck / 2, 0), left, 0, 255, 0);
+	DrawDebugLine(GetCentralPosition() + Vector2D(0, fuck / 2), up, 0, 255, 0);
+	DrawDebugLine(GetCentralPosition() - Vector2D(0, fuck / 2), down, 0, 255, 0);
+
+	DrawDebugCircle(Vector2D(x,y), 16, 1, 255, 1);
+	*/
 	BaseTank::Render();
 }

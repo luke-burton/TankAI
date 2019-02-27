@@ -6,15 +6,15 @@
 #include "b023200hTank.h"
 struct ANode
 {
-	bool Starting, Ending, isClosed;
+	bool isClosed;
 	int MyNumber, LastNumber;
+	float lastdist;
 	int dir;//0 = up, 1 = down, 2 = left, 3 = right
 	Vector2D position;
 	ANode()
 	{
+		lastdist = 0;
 		dir = 0;
-		Starting = false;
-		Ending = false;
 		isClosed = false;
 		MyNumber = 0;
 		LastNumber = 0;
@@ -22,9 +22,8 @@ struct ANode
 	}
 	ANode(ANode& old)
 	{
+		lastdist = old.lastdist;
 		dir = old.dir;
-		Starting = old.Starting;
-		Ending = old.Ending;
 		isClosed = old.isClosed;
 		MyNumber = old.MyNumber;
 		LastNumber = old.LastNumber;
@@ -32,23 +31,21 @@ struct ANode
 	}
 	ANode(int X, int Y, int N)
 	{
+		lastdist = 0;
 		dir = 0;
 		MyNumber = N;
 		LastNumber = 0;
 		isClosed = false;
 		position = Vector2D(X, Y);
-		Starting = false;
-		Ending = false;
 	}
 	ANode(int X, int Y)
 	{
+		lastdist = 0;
 		dir = 0;
 		MyNumber = 0;
 		LastNumber = 0;
 		isClosed = false;
 		position = Vector2D(X, Y);
-		Starting = false;
-		Ending = false;
 	}
 
 	bool operator== (const ANode& other) const {
