@@ -7,6 +7,7 @@
 #include <string>
 #include <iostream>
 #include <thread>
+#include "../../ObstacleManager.h"
 #include "../../Commons.h"
 
 enum Steering
