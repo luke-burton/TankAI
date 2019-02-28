@@ -1,3 +1,5 @@
 ﻿  b023200hTank.cpp
-c:\users\b023200h\documents\github\tankai\gameai\gameai\studenttanks\b023200h\b023200htank.cpp(58): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+c:\users\b023200h\documents\github\tankai\gameai\gameai\studenttanks\b023200h\b023200htank.cpp(78): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+c:\users\b023200h\documents\github\tankai\gameai\gameai\studenttanks\b023200h\b023200htank.cpp(242): warning C4018: '<': signed/unsigned mismatch
+c:\users\b023200h\documents\github\tankai\gameai\gameai\studenttanks\b023200h\b023200htank.cpp(241): warning C4101: 'ishit': unreferenced local variable
   GameAI.vcxproj -> C:\Users\b023200h\Documents\GitHub\TankAI\GameAI\Debug\GameAI.exe

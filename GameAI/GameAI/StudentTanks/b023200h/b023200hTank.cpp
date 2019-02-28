@@ -11,6 +11,26 @@ b023200hTank::b023200hTank(SDL_Renderer* renderer, TankSetupDetails details)
 	LowPriorBehavior = SEEK;
 	astar = new AStar(this, mCollisionMap);
 
+
+	for (GameObject* wall : ObstacleManager::Instance()->GetObstacles())
+	{
+
+		Vector2D newpos = wall->GetCentralPosition() - Vector2D(wall->GetAdjustedBoundingBox().width / 2, wall->GetAdjustedBoundingBox().height / 2);
+		corners.push_back(newpos);	
+		Vector2D newpos1 = wall->GetCentralPosition() - Vector2D(-wall->GetAdjustedBoundingBox().width / 2, wall->GetAdjustedBoundingBox().height / 2);
+		corners.push_back(newpos1);
+		Vector2D newpos2 = wall->GetCentralPosition() + Vector2D(-wall->GetAdjustedBoundingBox().width / 2, wall->GetAdjustedBoundingBox().height / 2);
+		corners.push_back(newpos2);
+		Vector2D newpos3 = wall->GetCentralPosition() + Vector2D(wall->GetAdjustedBoundingBox().width / 2, wall->GetAdjustedBoundingBox().height / 2);
+		corners.push_back(newpos3);
+		//Vector2D newpos1 = wall->GetCentralPosition() - Vector2D(-wall->GetAdjustedBoundingBox().width / 2, wall->GetAdjustedBoundingBox().height / 2);
+		//Vector2D newpos2 = wall->GetCentralPosition() + Vector2D(-wall->GetAdjustedBoundingBox().width / 2, wall->GetAdjustedBoundingBox().height / 2);
+		////Vector2D newpos3 = wall->GetCentralPosition() + Vector2D(wall->GetAdjustedBoundingBox().width / 2, wall->GetAdjustedBoundingBox().height / 2);
+	
+
+
+
+	}
 	
 	//t1.join();
 	//t1.detach();
@@ -212,42 +232,62 @@ void b023200hTank::RotateHeadingByRadian(double radian, int sign)
 
 void b023200hTank::Render()
 {
-	int fuck = 30;
-	Vector2D right = Vector2D(fuck / 1.3, 0) + GetCentralPosition();
-	Vector2D left = Vector2D(-fuck / 1.3, 0) + GetCentralPosition();	
-	Vector2D up = Vector2D(0,fuck) + GetCentralPosition();
-	Vector2D down = Vector2D(0,-fuck) + GetCentralPosition();
-	
-	int object = 0;
-	for (GameObject* fucks : ObstacleManager::Instance()->GetObstacles())
+	int feelerlength = 40;
+	int walllength = 10;
+	Vector2D right = Vector2D(feelerlength / 1.3, 0) + GetCentralPosition();
+	Vector2D left = Vector2D(-feelerlength / 1.3, 0) + GetCentralPosition();
+	Vector2D up = Vector2D(0, feelerlength) + GetCentralPosition();
+	Vector2D down = Vector2D(0,-feelerlength) + GetCentralPosition();
+	bool ishit;
+	for(int i = 0; i < corners.size() ; i+= 4)
 	{
-		if (object == 0)
-			continue;
-		if (object == 1)
-		{
-			Vector2D newpos = fucks->GetCentralPosition() + Vector2D(fucks->GetCollisionRadius(), -fucks->GetCollisionRadius());
-			Vector2D newpos1 = fucks->GetCentralPosition() + Vector2D(-fucks->GetCollisionRadius(), fucks->GetCollisionRadius());
-			Vector2D newpos2 = fucks->GetCentralPosition() + Vector2D(fucks->GetCollisionRadius(), fucks->GetCollisionRadius());
-			Vector2D newpos3 = fucks->GetCentralPosition() + Vector2D(-fucks->GetCollisionRadius(), -fucks->GetCollisionRadius());
-			DrawDebugLine(newpos3, newpos1, 0, 255, 0);
-			DrawDebugLine(newpos1, newpos2, 0, 255, 0);
-			DrawDebugLine(newpos2, newpos, 0, 255, 0);
-			DrawDebugLine(newpos, newpos3, 0, 255, 0);
+	Vector2D newpos = corners[i];
+	Vector2D newpos1 = corners[i + 1];
+	Vector2D newpos2 = corners[i + 2];
+	Vector2D newpos3 = corners[i + 3];
+	/* TOP OF COLLISIONS*/
+	DrawDebugLine(newpos - Vector2D(0, walllength), newpos1 - Vector2D(0, walllength), 255, 255, 255);//top line from left corner to right corner
+	DrawDebugLine(newpos - Vector2D(0,-walllength), newpos1 - Vector2D(0, -walllength), 255, 255, 255); // bot line from left corner to right corner
+	/* TOP OF COLLISIONS END*/
 
-		}
-		object++;
-	
+	/* BOT OF COLLISIONS*/
+	DrawDebugLine(newpos2 - Vector2D(0, walllength), newpos3 - Vector2D(0, walllength), 255, 255, 255);
+	DrawDebugLine(newpos2 - Vector2D(0, -walllength), newpos3 - Vector2D(0, -walllength), 255, 255, 255);
+	/* BOT OF COLLISIONS END*/
+	/* left side of collision start*/
+	DrawDebugLine(newpos - Vector2D(0, walllength), newpos2 - Vector2D(0, -walllength), 255, 255, 255);
+	DrawDebugLine(newpos - Vector2D(-walllength, walllength), newpos2 - Vector2D(-walllength, -walllength), 255, 255, 255);
+	/* left side of collision end*/
+	/* right side of collision start*/
+	DrawDebugLine(newpos1 - Vector2D(0, walllength), newpos3 - Vector2D(0, -walllength), 255, 255, 255);
+	DrawDebugLine(newpos1 - Vector2D(walllength, walllength), newpos3 - Vector2D(walllength, -walllength), 255, 255, 255);
+	/* right side of collision end*/
 	}
-	/*
-	if(!shit)
-		DrawDebugLine(GetCentralPosition() + Vector2D(fuck / 2,0), right, 0, 255, 0);
-	else
-		DrawDebugLine(GetCentralPosition() + Vector2D(fuck / 2, 0), right, 255, 0, 0);
-	DrawDebugLine(GetCentralPosition() - Vector2D(fuck / 2, 0), left, 0, 255, 0);
-	DrawDebugLine(GetCentralPosition() + Vector2D(0, fuck / 2), up, 0, 255, 0);
-	DrawDebugLine(GetCentralPosition() - Vector2D(0, fuck / 2), down, 0, 255, 0);
 
-	DrawDebugCircle(Vector2D(x,y), 16, 1, 255, 1);
+
+	/*
+
+		float a = right.x;
+		float b = newpos.x;
+		//std::cout << "(a - b) > ((fabs(a) < fabs(b) ? fabs(b) : fabs(a)) = " << ((a - b) > (fabs(a) < fabs(b) ? fabs(b) : fabs(a))) <<  " \n";
+		if ((a - b) > ((fabs(a) < fabs(b) ? fabs(b) : fabs(a)) * 500))
+			DrawDebugCircle(newpos, 16, 255, 1, 1);
+		if ((b - a) > ((fabs(a) < fabs(b) ? fabs(b) : fabs(a)) * 500))
+			DrawDebugCircle(newpos, 16, 1, 1, 255);
+		//DrawDebugCircle(newpos1, 16, 255, 255, 1);
+		//DrawDebugCircle(newpos2, 16, 255, 255, 1);
+		//DrawDebugCircle(newpos3, 16, 1, 255, 255);
 	*/
+	
+	//if(!ishit)
+	//	DrawDebugLine(GetCentralPosition() + Vector2D(fuck / 2,0), right, 0, 255, 0);
+	///else
+	//DrawDebugLine(GetCentralPosition() + Vector2D(fuck / 2, 0), right, 255, 0, 0);
+	//DrawDebugLine(GetCentralPosition() - Vector2D(fuck / 2, 0), left, 0, 255, 0);
+	//DrawDebugLine(GetCentralPosition() + Vector2D(0, fuck / 2), up, 0, 255, 0);
+	//DrawDebugLine(GetCentralPosition() - Vector2D(0, fuck / 2), down, 0, 255, 0);
+
+	//DrawDebugCircle(Vector2D(x,y), 16, 1, 255, 1);
+	//*/
 	BaseTank::Render();
 }
