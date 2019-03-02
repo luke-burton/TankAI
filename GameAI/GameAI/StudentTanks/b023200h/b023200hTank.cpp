@@ -96,6 +96,7 @@ void b023200hTank::RunLowPrior(float deltaTime)
 			mCurrentSpeed -= (kSpeedIncrement  * Vec2DDistance(Vector2D(x, y), this->GetCentralPosition())) * deltaTime;
 			if (mCurrentSpeed < -GetMaxSpeed() / 2)
 				mCurrentSpeed = -GetMaxSpeed() / 2;
+			
 				RotateHeadingToFacePosition(Vector2D(x, y), deltaTime);
 				RotateHeadingToFacePosition(Vector2D(x, y), deltaTime);
 				RotateHeadingToFacePosition(Vector2D(x, y), deltaTime);
@@ -230,6 +231,13 @@ void b023200hTank::RotateHeadingByRadian(double radian, int sign)
 
 //--------------------------------------------------------------------------------------------------
 
+bool b023200hTank::ShouldAvoid(Vector2D newpos, Vector2D up, Vector2D down, Vector2D left, Vector2D right)
+{
+	if (((newpos.x > right.x - 30 && newpos.x < right.x + 30) || (newpos.x > left.x - 30 && newpos.x < left.x + 30)) && ((newpos.y > up.y - 50 && newpos.y < up.y + 50) || (newpos.y > down.y - 50 && newpos.y < down.y + 50)))
+		return false;
+	else
+		return true;
+}
 void b023200hTank::Render()
 {
 	int feelerlength = 40;
@@ -238,19 +246,38 @@ void b023200hTank::Render()
 	Vector2D left = Vector2D(-feelerlength / 1.3, 0) + GetCentralPosition();
 	Vector2D up = Vector2D(0, feelerlength) + GetCentralPosition();
 	Vector2D down = Vector2D(0,-feelerlength) + GetCentralPosition();
-	bool ishit;
+	 ishit = false;
+	 ishit1 = false;
+	 ishit2 = false;
+	 ishit3 = false;
 	for(int i = 0; i < corners.size() ; i+= 4)
 	{
 	Vector2D newpos = corners[i];
 	Vector2D newpos1 = corners[i + 1];
 	Vector2D newpos2 = corners[i + 2];
 	Vector2D newpos3 = corners[i + 3];
+	if (!ShouldAvoid(newpos, up, down, left, right) || !ShouldAvoid(newpos1, up, down, left, right) || !ShouldAvoid(newpos2, up, down, left, right) || !ShouldAvoid(newpos3, up, down, left, right));
+	else
+		continue;
+
+	if (right.x > newpos2.x && right.x < newpos2.x + 30)
+		ishit = true;
+	std::cout << up.y   << " : " << newpos.y << " : " << (up.y > newpos.y) << " : " <<(up.y < newpos.y + 30) << " : "  <<  "\n";
+	if (left.x > newpos1.x - 30 && left.x < newpos1.x )
+		ishit1 = true;
+	if (up.y > newpos.y && up.y < newpos.y + 30  )
+		ishit2 = true;	
+	if (down.y > newpos2.y - 30 && down.y < newpos2.y  )
+		ishit3 = true;
+
+	continue;
 	/* TOP OF COLLISIONS*/
 	DrawDebugLine(newpos - Vector2D(0, walllength), newpos1 - Vector2D(0, walllength), 255, 255, 255);//top line from left corner to right corner
 	DrawDebugLine(newpos - Vector2D(0,-walllength), newpos1 - Vector2D(0, -walllength), 255, 255, 255); // bot line from left corner to right corner
 	/* TOP OF COLLISIONS END*/
 
 	/* BOT OF COLLISIONS*/
+	
 	DrawDebugLine(newpos2 - Vector2D(0, walllength), newpos3 - Vector2D(0, walllength), 255, 255, 255);
 	DrawDebugLine(newpos2 - Vector2D(0, -walllength), newpos3 - Vector2D(0, -walllength), 255, 255, 255);
 	/* BOT OF COLLISIONS END*/
@@ -264,30 +291,24 @@ void b023200hTank::Render()
 	/* right side of collision end*/
 	}
 
-
-	/*
-
-		float a = right.x;
-		float b = newpos.x;
-		//std::cout << "(a - b) > ((fabs(a) < fabs(b) ? fabs(b) : fabs(a)) = " << ((a - b) > (fabs(a) < fabs(b) ? fabs(b) : fabs(a))) <<  " \n";
-		if ((a - b) > ((fabs(a) < fabs(b) ? fabs(b) : fabs(a)) * 500))
-			DrawDebugCircle(newpos, 16, 255, 1, 1);
-		if ((b - a) > ((fabs(a) < fabs(b) ? fabs(b) : fabs(a)) * 500))
-			DrawDebugCircle(newpos, 16, 1, 1, 255);
-		//DrawDebugCircle(newpos1, 16, 255, 255, 1);
-		//DrawDebugCircle(newpos2, 16, 255, 255, 1);
-		//DrawDebugCircle(newpos3, 16, 1, 255, 255);
-	*/
-	
-	//if(!ishit)
-	//	DrawDebugLine(GetCentralPosition() + Vector2D(fuck / 2,0), right, 0, 255, 0);
-	///else
-	//DrawDebugLine(GetCentralPosition() + Vector2D(fuck / 2, 0), right, 255, 0, 0);
-	//DrawDebugLine(GetCentralPosition() - Vector2D(fuck / 2, 0), left, 0, 255, 0);
-	//DrawDebugLine(GetCentralPosition() + Vector2D(0, fuck / 2), up, 0, 255, 0);
-	//DrawDebugLine(GetCentralPosition() - Vector2D(0, fuck / 2), down, 0, 255, 0);
-
-	//DrawDebugCircle(Vector2D(x,y), 16, 1, 255, 1);
-	//*/
+	if (ishit)
+	{
+		
+		DrawDebugLine(GetCentralPosition() + Vector2D(feelerlength / 2, 0), right, 255, 0, 0);
+	}
+	else
+		DrawDebugLine(GetCentralPosition() + Vector2D(feelerlength / 2, 0), right, 0, 255, 0);
+	if (ishit1)
+		DrawDebugLine(GetCentralPosition() - Vector2D(feelerlength / 2, 0), left, 255, 0, 0);
+	else
+		DrawDebugLine(GetCentralPosition() - Vector2D(feelerlength / 2, 0), left, 0, 255, 0);
+	if (ishit2)
+		DrawDebugLine(GetCentralPosition() + Vector2D(0, feelerlength / 2), up, 255, 0, 0);
+	else
+		DrawDebugLine(GetCentralPosition() + Vector2D(0, feelerlength / 2), up, 0, 255, 0);
+	if (ishit3)
+		DrawDebugLine(GetCentralPosition() - Vector2D(0, feelerlength / 2), down, 255, 0, 0);
+	else
+		DrawDebugLine(GetCentralPosition() - Vector2D(0, feelerlength / 2), down, 0, 255, 0);
 	BaseTank::Render();
 }

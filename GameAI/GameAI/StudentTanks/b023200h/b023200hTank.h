@@ -43,6 +43,12 @@ protected:
 	Vector2D TargLastSeen;
 	std::vector<Vector2D> corners;
 	int startT;
+	bool ShouldAvoid(Vector2D newpos, Vector2D up, Vector2D down, Vector2D left, Vector2D right);
+
+	bool ishit = false;
+	bool ishit1 = false;
+	bool ishit2 = false;
+	bool ishit3 = false;
 };
 
 //---------------------------------------------------------------
