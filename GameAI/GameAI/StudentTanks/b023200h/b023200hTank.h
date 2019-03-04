@@ -45,11 +45,21 @@ protected:
 	int startT;
 	bool ShouldAvoidL(Vector2D TopLeft,Vector2D BotLeft, Vector2D up, Vector2D down, Vector2D left, Vector2D right);
 	bool ShouldAvoidR(Vector2D TopLeft,Vector2D BotLeft, Vector2D up, Vector2D down, Vector2D left, Vector2D right);
+	bool ShouldAvoidU(Vector2D TopLeft, Vector2D BotLeft, Vector2D up, Vector2D down, Vector2D left, Vector2D right);
+	bool ShouldAvoidD(Vector2D TopLeft, Vector2D BotLeft, Vector2D up, Vector2D down, Vector2D left, Vector2D right);
 	Vector2D Force;
 	bool ishit = false;
 	bool ishit1 = false;
 	bool ishit2 = false;
 	bool ishit3 = false;
+	bool ishit4 = false;
+	bool ishit5 = false;
+	bool ishit6 = false;
+	bool ishit7 = false;
+
+
+	float xy = 0;
+	float yx = 0;
 };
 
 //---------------------------------------------------------------

@@ -72,9 +72,10 @@ void b023200hTank::findpath()
 
 void b023200hTank::RunLowPrior(float deltaTime)
 {
-
-	if (ishit || ishit1 || ishit2 || ishit3)
+	
+	if (ishit || ishit1 || ishit2 || ishit3 || ishit4 || ishit5 )
 	{
+		 
 		if (LowPriorBehavior == SEEK || LowPriorBehavior == ARRIVE || LowPriorBehavior == PURSUIT)
 			LowPriorBehavior = AVOIDOB;
 
@@ -106,8 +107,6 @@ void b023200hTank::RunLowPrior(float deltaTime)
 				mCurrentSpeed = -GetMaxSpeed() / 2;
 			
 				RotateHeadingToFacePosition(Vector2D(x, y), deltaTime);
-				RotateHeadingToFacePosition(Vector2D(x, y), deltaTime);
-				RotateHeadingToFacePosition(Vector2D(x, y), deltaTime);
 		break;
 	case ARRIVE:
 	//	std::cout << "behavior = arrive \n";
@@ -123,40 +122,81 @@ void b023200hTank::RunLowPrior(float deltaTime)
 
 	case AVOIDOB:
 		//std::cout << "behavior = cunt \n" << " max speed = " << GetMaxSpeed() << "\n";
-		if (ishit)
+		
+		if (!ishit6 && ishit2 && ishit4)
 		{
-			float xy = GetCentralPosition().x;
-			float  yx = GetCentralPosition().y + (Force.y * 50);
-			
-				
+		
+			xy = GetCentralPosition().x;
+			yx = GetCentralPosition().y + 10;
+		}
+		else if (!ishit7 && ishit3 && ishit5)
+		{
+			xy = GetCentralPosition().x;
+			yx = GetCentralPosition().y - 10;
+		}
+		else if (ishit )
+		{
+			xy = GetCentralPosition().x ;
+			yx = GetCentralPosition().y + (Force.y * 10);
+		}
+		else if (ishit1)
+		{
+			xy = GetCentralPosition().x ;
+			yx = GetCentralPosition().y + (Force.y *  10);
+		}
+		else if (ishit2 )
+		{
+			xy = GetCentralPosition().x + (Force.y * 10);
+			yx = GetCentralPosition().y ;
+		}
+		else if (ishit3 )
+		{
+			xy = GetCentralPosition().x + (Force.y * 10);
+			yx = GetCentralPosition().y ;
+		}else if (ishit4 )
+		{	
+			xy = GetCentralPosition().x + (Force.y * 10);
+			yx = GetCentralPosition().y ;
+		}else if (ishit5 )
+		{
+			xy = GetCentralPosition().x + (Force.y * 10);
+			yx = GetCentralPosition().y ;
+		}
 			radian = (atan2(yx - this->GetCentralPosition().y, xy - this->GetCentralPosition().x));
 			 toTarget = Vec2DNormalize(GetCentralPosition() - Vector2D(xy, yx));
 			 angle = acos(mHeading.Dot(toTarget));
 			if (angle != angle)
 				angle = 0.0f;
 
-			if (Vec2DDistance(Vector2D(xy, yx), this->GetCentralPosition()) <= 35 || angle > 0.1)
+			if ( angle > 0.1)
 			{
 				if (mCurrentSpeed < 0)
 				{ 
-					mCurrentSpeed += (kSpeedIncrement  * Vec2DDistance(Vector2D(xy, yx), this->GetCentralPosition())) * deltaTime;
-					mCurrentSpeed += (kSpeedIncrement  * Vec2DDistance(Vector2D(xy, yx), this->GetCentralPosition())) * deltaTime;
-					mCurrentSpeed += (kSpeedIncrement  * Vec2DDistance(Vector2D(xy, yx), this->GetCentralPosition())) * deltaTime;
-					mCurrentSpeed += (kSpeedIncrement  * Vec2DDistance(Vector2D(xy, yx), this->GetCentralPosition())) * deltaTime;
-					mCurrentSpeed += (kSpeedIncrement  * Vec2DDistance(Vector2D(xy, yx), this->GetCentralPosition())) * deltaTime;
+					mCurrentSpeed += (Vec2DDistance(Vector2D(xy, yx), this->GetCentralPosition()) * kSpeedIncrement) * deltaTime;
+				
+					
 				}
 				if (mCurrentSpeed > 0)
 					mCurrentSpeed = 0;
+		
 				RotateHeadingToFacePosition(Vector2D(xy, yx), deltaTime);
+				RotateHeadingToFacePosition(Vector2D(xy, yx), deltaTime);
+				RotateHeadingToFacePosition(Vector2D(xy, yx), deltaTime);
+		
 				break;
 			}
-			mCurrentSpeed -= (kSpeedIncrement  * Vec2DDistance(Vector2D(xy, yx), this->GetCentralPosition())) * deltaTime;
-			if (mCurrentSpeed < -GetMaxSpeed() / 2)
-				mCurrentSpeed = -GetMaxSpeed() / 2;
-		}
+			else
+			{
+				mCurrentSpeed -= (kSpeedIncrement  / Vec2DDistance(Vector2D(xy, yx), this->GetCentralPosition())) * deltaTime;
+				if (mCurrentSpeed < -GetMaxSpeed() / 3)
+					mCurrentSpeed = -GetMaxSpeed() / 3;
+				RotateHeadingToFacePosition(Vector2D(xy, yx), deltaTime);
+				RotateHeadingToFacePosition(Vector2D(xy, yx), deltaTime);
+				RotateHeadingToFacePosition(Vector2D(xy, yx), deltaTime);
+			}
+		
 		break;
 	case PURSUIT:
-	//	std::cout << "behavior = pursuit \n" << " max speed = " << GetMaxSpeed() << "\n";
 		if (Vec2DDistance(Vector2D(x, y), this->GetCentralPosition()) <= 35 || angle > 0.1) 
 		{
 			if (mCurrentSpeed < 0)
@@ -270,7 +310,7 @@ void b023200hTank::RotateHeadingByRadian(double radian, int sign)
 bool b023200hTank::ShouldAvoidL(Vector2D TopLeft, Vector2D BotLeft, Vector2D up, Vector2D down, Vector2D left, Vector2D right)
 {
 
-	if (right.y > TopLeft.y && right.y < BotLeft.y && right.x < TopLeft.x + 30 && right.x > TopLeft.x - 30)
+	if (right.y > TopLeft.y && right.y < BotLeft.y && right.x < TopLeft.x + 55 && right.x > TopLeft.x - 25)
 	{
 		if (x <= BotLeft.x)
 			return false;
@@ -287,7 +327,7 @@ bool b023200hTank::ShouldAvoidL(Vector2D TopLeft, Vector2D BotLeft, Vector2D up,
 bool b023200hTank::ShouldAvoidR(Vector2D TopLeft, Vector2D BotLeft, Vector2D up, Vector2D down, Vector2D left, Vector2D right)
 {
 
-	if (left.y > TopLeft.y && left.y < BotLeft.y && left.x < TopLeft.x + 30 && left.x > TopLeft.x - 30)
+	if (left.y > TopLeft.y && left.y < BotLeft.y && left.x < TopLeft.x + 25  && left.x > TopLeft.x - 55)
 	{
 		if (x >= BotLeft.x)
 			return false;
@@ -302,19 +342,71 @@ bool b023200hTank::ShouldAvoidR(Vector2D TopLeft, Vector2D BotLeft, Vector2D up,
 	else
 		return false;
 }
+bool b023200hTank::ShouldAvoidU(Vector2D TopLeft, Vector2D BotLeft, Vector2D up, Vector2D down, Vector2D left, Vector2D right)
+{
+
+	if (up.x > TopLeft.x && up.x < BotLeft.x && left.y < TopLeft.y + 15  && left.y > TopLeft.y - 45)
+	{
+		if (GetCentralPosition().y > BotLeft.y)
+			return false;
+		if (y <= TopLeft.y)
+			return false;
+		if (Vector2D(x, y).Distance(TopLeft) < Vector2D(x, y).Distance(BotLeft))
+			Force.y = -1;
+		else
+			Force.y = 1;
+		
+		return true;
+	}
+		
+	else
+		return false;
+}
+
+
+bool b023200hTank::ShouldAvoidD(Vector2D TopLeft, Vector2D BotLeft, Vector2D up, Vector2D down, Vector2D left, Vector2D right)
+{
+
+	if (up.x > TopLeft.x && up.x < BotLeft.x && left.y < TopLeft.y + 45 && left.y > TopLeft.y - 15)
+	{
+		if (GetCentralPosition().y < BotLeft.y)
+			return false;
+		if (y >= BotLeft.y)
+			return false;
+		if (Vector2D(x, y).Distance(TopLeft) < Vector2D(x, y).Distance(BotLeft))
+			Force.y = -1;
+		else
+			Force.y = 1;
+
+		return true;
+	}
+
+	else
+		return false;
+}
+
 void b023200hTank::Render()
 {
+	std::cout << " health = " << GetHealth() << " \n";
 	Force = Vector2D(0, 0);
-	int feelerlength = 40;
+	int feelerlength = 50;
 	int walllength = 10;
-	Vector2D right = Vector2D(feelerlength / 1.3, 0) + GetCentralPosition();
-	Vector2D left = Vector2D(-feelerlength / 1.3, 0) + GetCentralPosition();
-	Vector2D up = Vector2D(0, feelerlength) + GetCentralPosition();
-	Vector2D down = Vector2D(0,-feelerlength) + GetCentralPosition();
+	Vector2D right = Vector2D(feelerlength  , 0) + GetCentralPosition();
+	Vector2D left = Vector2D(-feelerlength , 0) + GetCentralPosition();
+	Vector2D up = Vector2D(right.x - GetCentralPosition().x - 15, feelerlength - 10) + GetCentralPosition();
+	Vector2D down = Vector2D(right.x - GetCentralPosition().x - 15,-feelerlength + 10) + GetCentralPosition();
+	Vector2D up1 = Vector2D(left.x - GetCentralPosition().x + 15, feelerlength - 10) + GetCentralPosition();
+	Vector2D down1 = Vector2D(left.x - GetCentralPosition().x + 15,-feelerlength + 10) + GetCentralPosition();
+	Vector2D up2 = Vector2D(0 ,feelerlength + 10) + GetCentralPosition();
+	Vector2D down2 = Vector2D(0 ,-feelerlength - 10) + GetCentralPosition();
 	 ishit = false;
 	 ishit1 = false;
 	 ishit2 = false;
 	 ishit3 = false;
+	 ishit4 = false;
+	 ishit5 = false;
+	 ishit6 = false;
+	 ishit7 = false;
 	for(int i = 0; i < corners.size() ; i+= 4)
 	{
 	Vector2D newpos = corners[i];
@@ -325,62 +417,52 @@ void b023200hTank::Render()
 		ishit = true;
 	if (ShouldAvoidR(newpos1, newpos3, up,down,left,right))
 		ishit1 = true;
-
-
-	continue;
-
-	if (right.x > newpos2.x && right.x < newpos2.x + 60)
-		ishit = true;
-	//std::cout << up.y   << " : " << newpos.y << " : " << (up.y > newpos.y) << " : " <<(up.y < newpos.y + 30) << " : "  <<  "\n";
-	if (left.x > newpos1.x - 60 && left.x < newpos1.x )
-		ishit1 = true;
-	if (up.y > newpos.y && up.y < newpos.y + 60  )
-		ishit2 = true;	
-	if (down.y > newpos2.y - 60 && down.y < newpos2.y  )
+	if (ShouldAvoidU(newpos, newpos1, up,down,left,right))
+		ishit2 = true;
+	if (ShouldAvoidD(newpos2, newpos3, up,down,left,right))
 		ishit3 = true;
-
-	continue;
-	/* TOP OF COLLISIONS*/
-	DrawDebugLine(newpos - Vector2D(0, walllength), newpos1 - Vector2D(0, walllength), 255, 255, 255);//top line from left corner to right corner
-	DrawDebugLine(newpos - Vector2D(0,-walllength), newpos1 - Vector2D(0, -walllength), 255, 255, 255); // bot line from left corner to right corner
-	/* TOP OF COLLISIONS END*/
-
-	/* BOT OF COLLISIONS*/
+	if (ShouldAvoidU(newpos, newpos1, up1,down1,left,right))
+		ishit4 = true;
+	if (ShouldAvoidD(newpos2, newpos3, up1,down1,left,right))
+		ishit5 = true;
 	
-	DrawDebugLine(newpos2 - Vector2D(0, walllength), newpos3 - Vector2D(0, walllength), 255, 255, 255);
-	DrawDebugLine(newpos2 - Vector2D(0, -walllength), newpos3 - Vector2D(0, -walllength), 255, 255, 255);
-	/* BOT OF COLLISIONS END*/
-	/* left side of collision start*/
-	DrawDebugLine(newpos - Vector2D(0, walllength), newpos2 - Vector2D(0, -walllength), 255, 255, 255);
-	DrawDebugLine(newpos - Vector2D(-walllength, walllength), newpos2 - Vector2D(-walllength, -walllength), 255, 255, 255);
-	/* left side of collision end*/
-	/* right side of collision start*/
-	DrawDebugLine(newpos1 - Vector2D(0, walllength), newpos3 - Vector2D(0, -walllength), 255, 255, 255);
-	DrawDebugLine(newpos1 - Vector2D(walllength, walllength), newpos3 - Vector2D(walllength, -walllength), 255, 255, 255);
-	/* right side of collision end*/
+	if (ShouldAvoidU(newpos, newpos1, up2,up,left,right))
+		ishit6 = true;
+	if (ShouldAvoidD(newpos, newpos1, up2,down2,left,right))
+		ishit7 = true;
+
+	
+	continue;
+
 	}
-	std::cout << "force = " << Force.y << "\n";
-	if (Force.y != 0)
-		y += 50 *  Force.y;
-	DrawDebugCircle( Vector2D(x, y), 16, 255, 0, 0);
+	DrawDebugCircle(Vector2D(xy, yx), 16, 0, 255, 255);
+	DrawDebugCircle(Vector2D(x, y), 16, 255, 0, 0);
+	DrawDebugLine(GetCentralPosition(), up2, 255, 255, 255);
+	DrawDebugLine(GetCentralPosition(), down2, 255, 255, 255);
 	if (ishit)
-	{
-		
-		DrawDebugLine(GetCentralPosition() + Vector2D(feelerlength / 2, 0), right, 255, 0, 0);
-	}
+		DrawDebugLine(GetCentralPosition() , right, 255, 0, 0);
 	else
-		DrawDebugLine(GetCentralPosition() + Vector2D(feelerlength / 2, 0), right, 0, 255, 0);
+		DrawDebugLine(GetCentralPosition() , right, 0, 255, 0);
 	if (ishit1)
-		DrawDebugLine(GetCentralPosition() - Vector2D(feelerlength / 2, 0), left, 255, 0, 0);
+		DrawDebugLine(GetCentralPosition() , left, 255, 0, 0);
 	else
-		DrawDebugLine(GetCentralPosition() - Vector2D(feelerlength / 2, 0), left, 0, 255, 0);
+		DrawDebugLine(GetCentralPosition() , left, 0, 255, 0);
 	if (ishit2)
-		DrawDebugLine(GetCentralPosition() + Vector2D(0, feelerlength / 2), up, 255, 0, 0);
+		DrawDebugLine(GetCentralPosition(), up, 255, 0, 0);
 	else
-		DrawDebugLine(GetCentralPosition() + Vector2D(0, feelerlength / 2), up, 0, 255, 0);
+		DrawDebugLine(GetCentralPosition() , up, 0, 255, 0);
 	if (ishit3)
-		DrawDebugLine(GetCentralPosition() - Vector2D(0, feelerlength / 2), down, 255, 0, 0);
+		DrawDebugLine(GetCentralPosition(), down, 255, 0, 0);
 	else
-		DrawDebugLine(GetCentralPosition() - Vector2D(0, feelerlength / 2), down, 0, 255, 0);
+		DrawDebugLine(GetCentralPosition() , down, 0, 255, 0);
+	
+	if (ishit4)
+		DrawDebugLine(GetCentralPosition(), up1, 255, 0, 0);
+	else
+		DrawDebugLine(GetCentralPosition() , up1, 0, 255, 0);
+	if (ishit5)
+		DrawDebugLine(GetCentralPosition() , down1, 255, 0, 0);
+	else
+		DrawDebugLine(GetCentralPosition() , down1, 0, 255, 0);
 	BaseTank::Render();
 }
