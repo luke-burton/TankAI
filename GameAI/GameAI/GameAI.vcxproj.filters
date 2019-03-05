@@ -22,6 +22,9 @@
     <Filter Include="StudentTanks">
       <UniqueIdentifier>{31b35429-2ed8-4d73-bd9c-b6470afcf01c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="StudentTanks\Spakkertank">
+      <UniqueIdentifier>{30af308f-8d12-440c-9cac-038a473bb8ae}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Waypoint.h">
@@ -98,6 +101,9 @@
     </ClInclude>
     <ClInclude Include="StudentTanks\b023200h\AStar.h">
       <Filter>StudentTanks</Filter>
+    </ClInclude>
+    <ClInclude Include="StudentTanks\w019563h\w019563hTank.h">
+      <Filter>StudentTanks\Spakkertank</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -176,6 +182,9 @@
     <ClCompile Include="StudentTanks\b023200h\AStar.cpp">
       <Filter>StudentTanks</Filter>
     </ClCompile>
+    <ClCompile Include="StudentTanks\w019563h\w019563hTank.cpp">
+      <Filter>StudentTanks\Spakkertank</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Library Include="SDL\SDL2.lib" />
@@ -196,5 +205,13 @@
     <Xml Include="XML Data Files\Arena.xml">
       <Filter>XML Data Files</Filter>
     </Xml>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="StudentTanks\w019563h\TankSmall.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="StudentTanks\w019563h\TankSmallMan.png">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>

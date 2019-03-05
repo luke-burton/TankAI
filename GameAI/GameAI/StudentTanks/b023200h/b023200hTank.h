@@ -24,7 +24,7 @@ public:
 	~b023200hTank();
 
 	void ChangeState(BASE_TANK_STATE newState);
-
+	void RunHighPrior(float deltaTime);
 	void Update(float deltaTime, SDL_Event e);
 	void Render();
 	void RotateHeadingByRadian(double radian, int sign);

@@ -84,6 +84,7 @@
     <ClInclude Include="ProjectileManager.h" />
     <ClInclude Include="StudentTanks\b023200h\AStar.h" />
     <ClInclude Include="StudentTanks\b023200h\b023200hTank.h" />
+    <ClInclude Include="StudentTanks\w019563h\w019563hTank.h" />
     <ClInclude Include="TankManager.h" />
     <ClInclude Include="TestTank.h" />
     <ClInclude Include="Texture2D.h" />
@@ -109,6 +110,7 @@
     <ClCompile Include="Source.cpp" />
     <ClCompile Include="StudentTanks\b023200h\AStar.cpp" />
     <ClCompile Include="StudentTanks\b023200h\b023200hTank.cpp" />
+    <ClCompile Include="StudentTanks\w019563h\w019563hTank.cpp" />
     <ClCompile Include="TankManager.cpp" />
     <ClCompile Include="TestTank.cpp" />
     <ClCompile Include="Texture2D.cpp" />
@@ -134,6 +136,10 @@
     <Xml Include="XML Data Files\TankData.xml">
       <SubType>Designer</SubType>
     </Xml>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="StudentTanks\w019563h\TankSmall.png" />
+    <Image Include="StudentTanks\w019563h\TankSmallMan.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

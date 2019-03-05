@@ -50,8 +50,8 @@ void AStar::Tick()
 			//finalpath.push_back(ANode(nodes.at(next)));
 			break;
 		}
-		std::cout << nodes.at(next).dir << " : " << nodes.at(last).dir << "\n";
-		if(nodes.at(next).dir != nodes.at(last).dir || lastpathadded >= 3) 
+		///std::cout << nodes.at(next).dir << " : " << nodes.at(last).dir << "\n";
+		if(nodes.at(next).dir != nodes.at(last).dir || lastpathadded >=1) 
 		{ 
 			lastpathadded = 0;
 			finalpath.push_back(ANode(nodes.at(next)));		
@@ -99,7 +99,7 @@ void AStar::FindBestNeighbour()
 		float DistToE = (float)nodes.at(end).position.Distance(nodes.at(i).position);
 		float DistToS = (float)nodes.at(start).position.Distance(nodes.at(i).position);
 		if (nodes.at(i).dir != nodes.at(nodes.at(i).LastNumber).dir && nodes.at(i).LastNumber != start)
-			extra = 5 ;
+			extra = DistToC + 5;
 		if (DistToC + DistToE  + extra <= bestDist)
 		{
 			bestDist = DistToC + DistToE + extra;

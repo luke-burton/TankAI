@@ -31,7 +31,7 @@ b023200hTank::b023200hTank(SDL_Renderer* renderer, TankSetupDetails details)
 
 
 	}
-	
+	LowPriorBehavior = PURSUIT;
 	//t1.join();
 	//t1.detach();
 
@@ -69,20 +69,106 @@ void b023200hTank::findpath()
 	
 	
 }
+void b023200hTank::RunHighPrior(float deltaTime)
+{
+	BaseTank* target = mTanksICanSee[0];
 
+	float radian = (atan2(y - this->GetCentralPosition().y, x - this->GetCentralPosition().x));
+	Vector2D toTarget = Vec2DNormalize(GetCentralPosition() - Vector2D(x, y));
+	double angle = acos(mHeading.Dot(toTarget));
+	if (angle != angle)
+		angle = 0.0f;
+	if (target->GetCentralPosition().Distance(this->GetCentralPosition()) > 35)
+	{
+		if (Vec2DDistance(Vector2D(x, y), this->GetCentralPosition()) <= 35 || angle >  0.25)
+		{
+			if (mCurrentSpeed < 0)
+				mCurrentSpeed += (Vec2DDistance(Vector2D(x, y), this->GetCentralPosition()) * kSpeedIncrement) * deltaTime;
+			if (mCurrentSpeed > 0)
+				mCurrentSpeed = 0;
+
+			RotateHeadingToFacePosition(Vector2D(x, y), deltaTime);
+			RotateHeadingToFacePosition(Vector2D(x, y), deltaTime);
+			RotateHeadingToFacePosition(Vector2D(x, y), deltaTime);
+			if (angle < 0.05)
+				FireRockets();
+		//	RotateHeadingToFacePosition(Vector2D(x, y), deltaTime);
+			return;
+		}
+		mCurrentSpeed -= (kSpeedIncrement  * Vec2DDistance(Vector2D(x, y), this->GetCentralPosition())) * deltaTime;
+		if (mCurrentSpeed < -GetMaxSpeed() /2 )
+			mCurrentSpeed = -GetMaxSpeed() / 2;
+
+		RotateHeadingToFacePosition(Vector2D(x, y), deltaTime);
+		RotateHeadingToFacePosition(Vector2D(x, y), deltaTime);
+		RotateHeadingToFacePosition(Vector2D(x, y), deltaTime);
+		toTarget = mTanksICanSee[0]->GetCentralPosition() - GetCentralPosition();
+		toTarget.Normalize();
+		double dot = toTarget.Dot(mManFireDirection);
+		if (angle < 0.05)
+			FireRockets();
+		float angle = atan2(mManFireDirection.y - toTarget.y, mManFireDirection.x - toTarget.x) * 90 / Pi;
+
+			angle = 3;
+
+		RotateManByRadian(kManTurnRate, -angle, 1);
+		FireABullet();
+		
+	}
+	else
+	{
+		if (mCurrentSpeed < 0)
+			mCurrentSpeed += (Vec2DDistance(Vector2D(x, y), this->GetCentralPosition()) * kSpeedIncrement) * deltaTime;
+	
+		mCurrentSpeed -=  kSpeedIncrement / 50 * deltaTime;
+		mCurrentSpeed +=  kSpeedIncrement / 100 * deltaTime;
+		if (mCurrentSpeed > 0)
+			mCurrentSpeed = 0;
+		x = target->GetCentralPosition().x;
+		y = target->GetCentralPosition().y;
+		float radian = (atan2(y - this->GetCentralPosition().y, x - this->GetCentralPosition().x));
+		Vector2D toTarget = Vec2DNormalize(GetCentralPosition() - Vector2D(x, y));
+		double angle = acos(mHeading.Dot(toTarget));
+		if (angle != angle)
+			angle = 0.0f;
+		//DropAMine();
+		
+		FireRockets();
+		if (angle > 0.01)
+		{
+			RotateHeadingToFacePosition(Vector2D(x, y), deltaTime);
+			RotateHeadingToFacePosition(Vector2D(x, y), deltaTime);
+			RotateHeadingToFacePosition(Vector2D(x, y), deltaTime);
+		}
+		
+
+		toTarget = mTanksICanSee[0]->GetCentralPosition() - GetCentralPosition();
+		toTarget.Normalize();
+		double dot = toTarget.Dot(mManFireDirection);
+		 angle = atan2(mManFireDirection.y - toTarget.y, mManFireDirection.x - toTarget.x) * 90 / Pi;
+		if (angle > 0)
+			angle = 3;
+	
+		RotateManByRadian(kManTurnRate, -angle, 1);
+
+
+	}
+
+}
 void b023200hTank::RunLowPrior(float deltaTime)
 {
 	
 	if (ishit || ishit1 || ishit2 || ishit3 || ishit4 || ishit5 )
 	{
 		 
-		if (LowPriorBehavior == SEEK || LowPriorBehavior == ARRIVE || LowPriorBehavior == PURSUIT)
-			LowPriorBehavior = AVOIDOB;
+		//if (LowPriorBehavior == SEEK || LowPriorBehavior == ARRIVE || LowPriorBehavior == PURSUIT)
+		//	LowPriorBehavior = AVOIDOB;
 
 	}
 	else if (LowPriorBehavior == AVOIDOB)
 		LowPriorBehavior = SEEK;
 
+	
 	float radian = (atan2(y - this->GetCentralPosition().y, x - this->GetCentralPosition().x));
 	Vector2D toTarget = Vec2DNormalize( GetCentralPosition() - Vector2D(x,y) );
 	double angle = acos(mHeading.Dot(toTarget));
@@ -92,24 +178,26 @@ void b023200hTank::RunLowPrior(float deltaTime)
 
 	if (LowPriorBehavior != PURSUIT && LowPriorBehavior != AVOIDOB)
 	{
-		if (Vec2DDistance(Vector2D(x, y), this->GetCentralPosition()) <= 35 ||  angle >  0.1)
+		if (Vec2DDistance(Vector2D(x, y), this->GetCentralPosition()) <= 35 || angle > 0.15 )
 			LowPriorBehavior = ARRIVE;
 		else
 			LowPriorBehavior = SEEK;
 	}
+	std::cout << " angle = " << angle << " dist = " << (Vec2DDistance(Vector2D(x, y), this->GetCentralPosition())) << "\n";
 	//std::cout << "type = " << ishit << " : " << ishit1 << " : " << ishit2 << " : " << ishit3 << " BEHAVIOR =  " << LowPriorBehavior << " \n";
 	switch (LowPriorBehavior)
 	{
 	case SEEK:
-		//std::cout << "behavior = seek \n"<< " max speed = " << GetMaxSpeed() << "\n";
+		std::cout << "behavior = seek \n"<< " max speed = " << GetMaxSpeed() << "\n";
 			mCurrentSpeed -= (kSpeedIncrement  * Vec2DDistance(Vector2D(x, y), this->GetCentralPosition())) * deltaTime;
 			if (mCurrentSpeed < -GetMaxSpeed() / 2)
 				mCurrentSpeed = -GetMaxSpeed() / 2;
 			
 				RotateHeadingToFacePosition(Vector2D(x, y), deltaTime);
+				RotateHeadingToFacePosition(Vector2D(x, y), deltaTime);
 		break;
 	case ARRIVE:
-	//	std::cout << "behavior = arrive \n";
+		std::cout << "behavior = arrive \n";
 		if (mCurrentSpeed < 0)
 			mCurrentSpeed += (Vec2DDistance(Vector2D(x, y), this->GetCentralPosition()) * kSpeedIncrement ) * deltaTime;
 		if (mCurrentSpeed > 0)
@@ -121,8 +209,6 @@ void b023200hTank::RunLowPrior(float deltaTime)
 		break;
 
 	case AVOIDOB:
-		//std::cout << "behavior = cunt \n" << " max speed = " << GetMaxSpeed() << "\n";
-		
 		if (!ishit6 && ishit2 && ishit4)
 		{
 		
@@ -152,7 +238,7 @@ void b023200hTank::RunLowPrior(float deltaTime)
 		else if (ishit3 )
 		{
 			xy = GetCentralPosition().x + (Force.y * 10);
-			yx = GetCentralPosition().y ;
+			yx = GetCentralPosition().y  ;
 		}else if (ishit4 )
 		{	
 			xy = GetCentralPosition().x + (Force.y * 10);
@@ -160,7 +246,7 @@ void b023200hTank::RunLowPrior(float deltaTime)
 		}else if (ishit5 )
 		{
 			xy = GetCentralPosition().x + (Force.y * 10);
-			yx = GetCentralPosition().y ;
+			yx = GetCentralPosition().y  ;
 		}
 			radian = (atan2(yx - this->GetCentralPosition().y, xy - this->GetCentralPosition().x));
 			 toTarget = Vec2DNormalize(GetCentralPosition() - Vector2D(xy, yx));
@@ -180,51 +266,46 @@ void b023200hTank::RunLowPrior(float deltaTime)
 					mCurrentSpeed = 0;
 		
 				RotateHeadingToFacePosition(Vector2D(xy, yx), deltaTime);
-				RotateHeadingToFacePosition(Vector2D(xy, yx), deltaTime);
-				RotateHeadingToFacePosition(Vector2D(xy, yx), deltaTime);
+			//	RotateHeadingToFacePosition(Vector2D(xy, yx), deltaTime);
+			//	RotateHeadingToFacePosition(Vector2D(xy, yx), deltaTime);
 		
 				break;
 			}
 			else
 			{
 				mCurrentSpeed -= (kSpeedIncrement  / Vec2DDistance(Vector2D(xy, yx), this->GetCentralPosition())) * deltaTime;
-				if (mCurrentSpeed < -GetMaxSpeed() / 3)
-					mCurrentSpeed = -GetMaxSpeed() / 3;
+				if (mCurrentSpeed < -GetMaxSpeed() / 4)
+					mCurrentSpeed = -GetMaxSpeed() / 4;
 				RotateHeadingToFacePosition(Vector2D(xy, yx), deltaTime);
-				RotateHeadingToFacePosition(Vector2D(xy, yx), deltaTime);
-				RotateHeadingToFacePosition(Vector2D(xy, yx), deltaTime);
+				//RotateHeadingToFacePosition(Vector2D(xy, yx), deltaTime);
+				//RotateHeadingToFacePosition(Vector2D(xy, yx), deltaTime);
 			}
 		
 		break;
 	case PURSUIT:
-		if (Vec2DDistance(Vector2D(x, y), this->GetCentralPosition()) <= 35 || angle > 0.1) 
-		{
-			if (mCurrentSpeed < 0)
-				mCurrentSpeed += (kSpeedIncrement  * Vec2DDistance(Vector2D(x, y), this->GetCentralPosition())) * deltaTime;
-			if (mCurrentSpeed > 0)
-				mCurrentSpeed = 0;
-			RotateHeadingToFacePosition(Vector2D(x, y), deltaTime);
-			break;
-		}
-		mCurrentSpeed -= (Vec2DDistance(Vector2D(x, y), this->GetCentralPosition()) * kSpeedIncrement   ) * deltaTime;
-		if (mCurrentSpeed < -GetMaxSpeed())
-			mCurrentSpeed = -GetMaxSpeed();
+	
 		break;
 	}
 }
 void b023200hTank::Update(float deltaTime, SDL_Event e)
 {
 	BaseTank::Update(deltaTime, e);
+	
+
 
 	SDL_GetMouseState(&x, &y);
+	//std::cout << "x = " << x << " y = " << y << "\n";
 	if (mTanksICanSee.size() > 0)
 	{
+		LowPriorBehavior = PURSUIT;
 		TargLastSeen = mTanksICanSee[0]->GetCentralPosition();
 	}
 	else if (LowPriorBehavior == PURSUIT)
 	{
 		LowPriorBehavior = SEEK;
 	}
+	astar = new AStar(this, mCollisionMap);
+	astar->Tick();
 	switch (e.type)
 	{
 		case SDL_MOUSEBUTTONUP:
@@ -233,25 +314,43 @@ void b023200hTank::Update(float deltaTime, SDL_Event e)
 			{
 			case SDL_BUTTON_RIGHT:
 				LowPriorBehavior = SEEK;
-				//astar = new AStar(this, mCollisionMap);
-				//astar->Tick();
+				astar = new AStar(this, mCollisionMap);
+				astar->Tick();
 				break;
 			case SDL_BUTTON_LEFT:
 				if (LowPriorBehavior != PURSUIT)
 					LowPriorBehavior = PURSUIT;
 				else
 					LowPriorBehavior = SEEK;
+				astar = new AStar(this, mCollisionMap);
+				astar->Tick();
 				break;
 			}
 		}
 	break;
 	}
 
-
+	if (astar->finalpath.size() > 0)
+	{
+		if (astar->finalpath.back().position.Distance(GetCentralPosition()) <= 35)
+			astar->finalpath.pop_back();
+		if (astar->finalpath.size() > 0)
+		{
+			x = astar->finalpath.back().position.x;
+			y = astar->finalpath.back().position.y;
+		}
+	}
 	if (x == 0 && y == 0 )
 		return;
+	if (LowPriorBehavior == PURSUIT && mTanksICanSee.size() > 0)
+	{ 
+		RunHighPrior(deltaTime);
+	
+		return;
+	}
+	
 	RunLowPrior(deltaTime);
-	//mCurrentSpeed -= 1 * deltaTime;		
+	mCurrentSpeed -= 1 * deltaTime;
 }
 
 //--------------------------------------------------------------------------------------------------
@@ -387,18 +486,25 @@ bool b023200hTank::ShouldAvoidD(Vector2D TopLeft, Vector2D BotLeft, Vector2D up,
 
 void b023200hTank::Render()
 {
-	std::cout << " health = " << GetHealth() << " \n";
+	if (astar->finalpath.size() > 0)
+	{
+		DrawDebugCircle(astar->finalpath.back().position, 16, 255, 255, 155);
+	}
+	DrawDebugCircle(GetCentralPosition(), GetHealth(), 255, 255, 255);
+	BaseTank::Render();
+	return;//render disabled here
+	//std::cout << " health = " << GetHealth() << " \n";
 	Force = Vector2D(0, 0);
 	int feelerlength = 50;
 	int walllength = 10;
 	Vector2D right = Vector2D(feelerlength  , 0) + GetCentralPosition();
 	Vector2D left = Vector2D(-feelerlength , 0) + GetCentralPosition();
-	Vector2D up = Vector2D(right.x - GetCentralPosition().x - 15, feelerlength - 10) + GetCentralPosition();
-	Vector2D down = Vector2D(right.x - GetCentralPosition().x - 15,-feelerlength + 10) + GetCentralPosition();
-	Vector2D up1 = Vector2D(left.x - GetCentralPosition().x + 15, feelerlength - 10) + GetCentralPosition();
-	Vector2D down1 = Vector2D(left.x - GetCentralPosition().x + 15,-feelerlength + 10) + GetCentralPosition();
+	Vector2D up = Vector2D(right.x - GetCentralPosition().x + 5, feelerlength - 10) + GetCentralPosition();
+	Vector2D down = Vector2D(right.x - GetCentralPosition().x + 5,-feelerlength + 10) + GetCentralPosition();
+	Vector2D up1 = Vector2D(left.x - GetCentralPosition().x - 5, feelerlength - 10) + GetCentralPosition();
+	Vector2D down1 = Vector2D(left.x - GetCentralPosition().x - 5,-feelerlength + 10) + GetCentralPosition();
 	Vector2D up2 = Vector2D(0 ,feelerlength + 10) + GetCentralPosition();
-	Vector2D down2 = Vector2D(0 ,-feelerlength - 10) + GetCentralPosition();
+	Vector2D down2 = Vector2D(0 ,-feelerlength + 10) + GetCentralPosition();
 	 ishit = false;
 	 ishit1 = false;
 	 ishit2 = false;
@@ -409,6 +515,8 @@ void b023200hTank::Render()
 	 ishit7 = false;
 	for(int i = 0; i < corners.size() ; i+= 4)
 	{
+
+		continue;///TODO OBS AVOIDANCE IS DISABLED HERE
 	Vector2D newpos = corners[i];
 	Vector2D newpos1 = corners[i + 1];
 	Vector2D newpos2 = corners[i + 2];
@@ -428,7 +536,7 @@ void b023200hTank::Render()
 	
 	if (ShouldAvoidU(newpos, newpos1, up2,up,left,right))
 		ishit6 = true;
-	if (ShouldAvoidD(newpos, newpos1, up2,down2,left,right))
+	if (ShouldAvoidD(newpos2, newpos3, down2, down2,left,right))
 		ishit7 = true;
 
 	
@@ -438,7 +546,10 @@ void b023200hTank::Render()
 	DrawDebugCircle(Vector2D(xy, yx), 16, 0, 255, 255);
 	DrawDebugCircle(Vector2D(x, y), 16, 255, 0, 0);
 	DrawDebugLine(GetCentralPosition(), up2, 255, 255, 255);
-	DrawDebugLine(GetCentralPosition(), down2, 255, 255, 255);
+	if(ishit7)
+		DrawDebugLine(GetCentralPosition(), down2, 255, 255, 255);
+	else
+		DrawDebugLine(GetCentralPosition(), down2, 255, 0, 255);
 	if (ishit)
 		DrawDebugLine(GetCentralPosition() , right, 255, 0, 0);
 	else
