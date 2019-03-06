@@ -1681,3 +1681,84 @@ Tanks destroyed: 0	= 0
 Crates collected: 0	= 0
 Survival bonus': 0	= 0
 -------------------------------------------------------------
+-------------------------------------------------------------
+Tank name: b023200hTank   SCORE: 0
+Bullets hit: 0		= 0
+Rockets hit: 0		= 0
+Mines hit: 0		= 0
+Tanks destroyed: 0	= 0
+Crates collected: 0	= 0
+Survival bonus': 0	= 0
+-------------------------------------------------------------
+-------------------------------------------------------------
+Tank name: w019563hTank   SCORE: 20
+Bullets hit: 78		= 156
+Rockets hit: 1		= 1
+Mines hit: 0		= 0
+Tanks destroyed: 0	= 0
+Crates collected: 0	= 0
+Survival bonus': 2	= 10
+-------------------------------------------------------------
+-------------------------------------------------------------
+Tank name: b023200hTank   SCORE: 20
+Bullets hit: 10		= 20
+Rockets hit: 19		= 19
+Mines hit: 0		= 0
+Tanks destroyed: 2	= 20
+Crates collected: 0	= 0
+Survival bonus': 3	= 15
+-------------------------------------------------------------
+-------------------------------------------------------------
+Tank name: w019563hTank   SCORE: 20
+Bullets hit: 77		= 154
+Rockets hit: 1		= 1
+Mines hit: 0		= 0
+Tanks destroyed: 0	= 0
+Crates collected: 0	= 0
+Survival bonus': 3	= 15
+-------------------------------------------------------------
+-------------------------------------------------------------
+Tank name: b023200hTank   SCORE: 20
+Bullets hit: 15		= 30
+Rockets hit: 17		= 17
+Mines hit: 0		= 0
+Tanks destroyed: 1	= 10
+Crates collected: 0	= 0
+Survival bonus': 3	= 15
+-------------------------------------------------------------
+-------------------------------------------------------------
+Tank name: w019563hTank   SCORE: 20
+Bullets hit: 78		= 156
+Rockets hit: 3		= 3
+Mines hit: 0		= 0
+Tanks destroyed: 0	= 0
+Crates collected: 0	= 0
+Survival bonus': 2	= 10
+-------------------------------------------------------------
+-------------------------------------------------------------
+Tank name: b023200hTank   SCORE: 20
+Bullets hit: 7		= 14
+Rockets hit: 10		= 10
+Mines hit: 0		= 0
+Tanks destroyed: 0	= 0
+Crates collected: 0	= 0
+Survival bonus': 1	= 5
+-------------------------------------------------------------
+-------------------------------------------------------------
+Tank name: b023200hTank   SCORE: 20
+Bullets hit: 5		= 10
+Rockets hit: 12		= 12
+Mines hit: 0		= 0
+Tanks destroyed: 0	= 0
+Crates collected: 0	= 0
+Survival bonus': 1	= 5
+-------------------------------------------------------------
+-------------------------------------------------------------
+Tank name: b023200hTank   SCORE: 20
+Bullets hit: 15		= 30
+Rockets hit: 12		= 12
+Mines hit: 0		= 0
+Tanks destroyed: 0	= 0
+Crates collected: 0	= 0
+Survival bonus': 1	= 5
+-------------------------------------------------------------

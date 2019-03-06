@@ -57,6 +57,14 @@ void w019563hTank::Update(float deltaTime, SDL_Event e)
 
 	SetupNodes(mx, my, xx, yy);
 
+	if (IsBlocked(Vector2D(mx, my)) == true)
+	{
+		if (Tanks.size() != NULL)
+		{
+			mx = Tanks.front().Position.x;
+			my = Tanks.front().Position.y;
+		}
+	}
 
 	FindBlocking();
 
@@ -254,7 +262,7 @@ void w019563hTank::Attack(Tank TankToAttack)
 		if (angle != angle)
 			angle = 0.0f;
 
-		if (angle < 0.01)
+		if (angle < 0.4)
 		{
 			FireRockets();
 		}

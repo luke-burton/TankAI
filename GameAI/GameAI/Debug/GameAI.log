@@ -1,35 +1,37 @@
 ﻿  w019563hTank.cpp
-c:\users\b023200h\documents\github\tankai\gameai\gameai\studenttanks\w019563h\w019563htank.cpp(55): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
-c:\users\b023200h\documents\github\tankai\gameai\gameai\studenttanks\w019563h\w019563htank.cpp(56): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
-c:\users\b023200h\documents\github\tankai\gameai\gameai\studenttanks\w019563h\w019563htank.cpp(39): warning C4101: 'apressed': unreferenced local variable
-c:\users\b023200h\documents\github\tankai\gameai\gameai\studenttanks\w019563h\w019563htank.cpp(208): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
-c:\users\b023200h\documents\github\tankai\gameai\gameai\studenttanks\w019563h\w019563htank.cpp(209): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
-c:\users\b023200h\documents\github\tankai\gameai\gameai\studenttanks\w019563h\w019563htank.cpp(222): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
-c:\users\b023200h\documents\github\tankai\gameai\gameai\studenttanks\w019563h\w019563htank.cpp(223): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
-c:\users\b023200h\documents\github\tankai\gameai\gameai\studenttanks\w019563h\w019563htank.cpp(237): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
-c:\users\b023200h\documents\github\tankai\gameai\gameai\studenttanks\w019563h\w019563htank.cpp(238): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
-c:\users\b023200h\documents\github\tankai\gameai\gameai\studenttanks\w019563h\w019563htank.cpp(255): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
-c:\users\b023200h\documents\github\tankai\gameai\gameai\studenttanks\w019563h\w019563htank.cpp(256): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
-c:\users\b023200h\documents\github\tankai\gameai\gameai\studenttanks\w019563h\w019563htank.cpp(308): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
-c:\users\b023200h\documents\github\tankai\gameai\gameai\studenttanks\w019563h\w019563htank.cpp(309): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
-c:\users\b023200h\documents\github\tankai\gameai\gameai\studenttanks\w019563h\w019563htank.cpp(316): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-c:\users\b023200h\documents\github\tankai\gameai\gameai\studenttanks\w019563h\w019563htank.cpp(316): warning C4552: '/': result of expression not used
-c:\users\b023200h\documents\github\tankai\gameai\gameai\studenttanks\w019563h\w019563htank.cpp(327): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-c:\users\b023200h\documents\github\tankai\gameai\gameai\studenttanks\w019563h\w019563htank.cpp(327): warning C4552: '/': result of expression not used
-c:\users\b023200h\documents\github\tankai\gameai\gameai\studenttanks\w019563h\w019563htank.cpp(338): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-c:\users\b023200h\documents\github\tankai\gameai\gameai\studenttanks\w019563h\w019563htank.cpp(338): warning C4552: '/': result of expression not used
-c:\users\b023200h\documents\github\tankai\gameai\gameai\studenttanks\w019563h\w019563htank.cpp(349): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-c:\users\b023200h\documents\github\tankai\gameai\gameai\studenttanks\w019563h\w019563htank.cpp(349): warning C4552: '/': result of expression not used
-c:\users\b023200h\documents\github\tankai\gameai\gameai\studenttanks\w019563h\w019563htank.cpp(360): warning C4018: '<': signed/unsigned mismatch
-c:\users\b023200h\documents\github\tankai\gameai\gameai\studenttanks\w019563h\w019563htank.cpp(364): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-c:\users\b023200h\documents\github\tankai\gameai\gameai\studenttanks\w019563h\w019563htank.cpp(389): warning C4018: '<': signed/unsigned mismatch
-c:\users\b023200h\documents\github\tankai\gameai\gameai\studenttanks\w019563h\w019563htank.cpp(398): warning C4018: '<': signed/unsigned mismatch
-c:\users\b023200h\documents\github\tankai\gameai\gameai\studenttanks\w019563h\w019563htank.cpp(439): warning C4018: '<': signed/unsigned mismatch
-c:\users\b023200h\documents\github\tankai\gameai\gameai\studenttanks\w019563h\w019563htank.cpp(453): warning C4018: '<': signed/unsigned mismatch
-c:\users\b023200h\documents\github\tankai\gameai\gameai\studenttanks\w019563h\w019563htank.cpp(455): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
-c:\users\b023200h\documents\github\tankai\gameai\gameai\studenttanks\w019563h\w019563htank.cpp(456): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
-c:\users\b023200h\documents\github\tankai\gameai\gameai\studenttanks\w019563h\w019563htank.cpp(451): warning C4390: ';': empty controlled statement found; is this the intent?
-c:\users\b023200h\documents\github\tankai\gameai\gameai\studenttanks\w019563h\w019563htank.cpp(464): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
-c:\users\b023200h\documents\github\tankai\gameai\gameai\studenttanks\w019563h\w019563htank.cpp(465): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
-c:\users\b023200h\documents\github\tankai\gameai\gameai\studenttanks\w019563h\w019563htank.cpp(502): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-  GameAI.vcxproj -> C:\Users\b023200h\Documents\GitHub\TankAI\GameAI\Debug\GameAI.exe
+c:\users\b023200h.student\documents\github\tankai\gameai\gameai\studenttanks\w019563h\w019563htank.cpp(55): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+c:\users\b023200h.student\documents\github\tankai\gameai\gameai\studenttanks\w019563h\w019563htank.cpp(56): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+c:\users\b023200h.student\documents\github\tankai\gameai\gameai\studenttanks\w019563h\w019563htank.cpp(64): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+c:\users\b023200h.student\documents\github\tankai\gameai\gameai\studenttanks\w019563h\w019563htank.cpp(65): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+c:\users\b023200h.student\documents\github\tankai\gameai\gameai\studenttanks\w019563h\w019563htank.cpp(39): warning C4101: 'apressed': unreferenced local variable
+c:\users\b023200h.student\documents\github\tankai\gameai\gameai\studenttanks\w019563h\w019563htank.cpp(208): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+c:\users\b023200h.student\documents\github\tankai\gameai\gameai\studenttanks\w019563h\w019563htank.cpp(209): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+c:\users\b023200h.student\documents\github\tankai\gameai\gameai\studenttanks\w019563h\w019563htank.cpp(222): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+c:\users\b023200h.student\documents\github\tankai\gameai\gameai\studenttanks\w019563h\w019563htank.cpp(223): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+c:\users\b023200h.student\documents\github\tankai\gameai\gameai\studenttanks\w019563h\w019563htank.cpp(237): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+c:\users\b023200h.student\documents\github\tankai\gameai\gameai\studenttanks\w019563h\w019563htank.cpp(238): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+c:\users\b023200h.student\documents\github\tankai\gameai\gameai\studenttanks\w019563h\w019563htank.cpp(255): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+c:\users\b023200h.student\documents\github\tankai\gameai\gameai\studenttanks\w019563h\w019563htank.cpp(256): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+c:\users\b023200h.student\documents\github\tankai\gameai\gameai\studenttanks\w019563h\w019563htank.cpp(308): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+c:\users\b023200h.student\documents\github\tankai\gameai\gameai\studenttanks\w019563h\w019563htank.cpp(309): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+c:\users\b023200h.student\documents\github\tankai\gameai\gameai\studenttanks\w019563h\w019563htank.cpp(316): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+c:\users\b023200h.student\documents\github\tankai\gameai\gameai\studenttanks\w019563h\w019563htank.cpp(316): warning C4552: '/': result of expression not used
+c:\users\b023200h.student\documents\github\tankai\gameai\gameai\studenttanks\w019563h\w019563htank.cpp(327): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+c:\users\b023200h.student\documents\github\tankai\gameai\gameai\studenttanks\w019563h\w019563htank.cpp(327): warning C4552: '/': result of expression not used
+c:\users\b023200h.student\documents\github\tankai\gameai\gameai\studenttanks\w019563h\w019563htank.cpp(338): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+c:\users\b023200h.student\documents\github\tankai\gameai\gameai\studenttanks\w019563h\w019563htank.cpp(338): warning C4552: '/': result of expression not used
+c:\users\b023200h.student\documents\github\tankai\gameai\gameai\studenttanks\w019563h\w019563htank.cpp(349): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+c:\users\b023200h.student\documents\github\tankai\gameai\gameai\studenttanks\w019563h\w019563htank.cpp(349): warning C4552: '/': result of expression not used
+c:\users\b023200h.student\documents\github\tankai\gameai\gameai\studenttanks\w019563h\w019563htank.cpp(360): warning C4018: '<': signed/unsigned mismatch
+c:\users\b023200h.student\documents\github\tankai\gameai\gameai\studenttanks\w019563h\w019563htank.cpp(364): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+c:\users\b023200h.student\documents\github\tankai\gameai\gameai\studenttanks\w019563h\w019563htank.cpp(389): warning C4018: '<': signed/unsigned mismatch
+c:\users\b023200h.student\documents\github\tankai\gameai\gameai\studenttanks\w019563h\w019563htank.cpp(398): warning C4018: '<': signed/unsigned mismatch
+c:\users\b023200h.student\documents\github\tankai\gameai\gameai\studenttanks\w019563h\w019563htank.cpp(439): warning C4018: '<': signed/unsigned mismatch
+c:\users\b023200h.student\documents\github\tankai\gameai\gameai\studenttanks\w019563h\w019563htank.cpp(453): warning C4018: '<': signed/unsigned mismatch
+c:\users\b023200h.student\documents\github\tankai\gameai\gameai\studenttanks\w019563h\w019563htank.cpp(455): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+c:\users\b023200h.student\documents\github\tankai\gameai\gameai\studenttanks\w019563h\w019563htank.cpp(456): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+c:\users\b023200h.student\documents\github\tankai\gameai\gameai\studenttanks\w019563h\w019563htank.cpp(451): warning C4390: ';': empty controlled statement found; is this the intent?
+c:\users\b023200h.student\documents\github\tankai\gameai\gameai\studenttanks\w019563h\w019563htank.cpp(464): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+c:\users\b023200h.student\documents\github\tankai\gameai\gameai\studenttanks\w019563h\w019563htank.cpp(465): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+c:\users\b023200h.student\documents\github\tankai\gameai\gameai\studenttanks\w019563h\w019563htank.cpp(502): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+  GameAI.vcxproj -> C:\Users\b023200h.STUDENT\Documents\GitHub\TankAI\GameAI\Debug\GameAI.exe

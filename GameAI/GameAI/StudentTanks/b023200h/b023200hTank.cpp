@@ -9,7 +9,7 @@ b023200hTank::b023200hTank(SDL_Renderer* renderer, TankSetupDetails details)
 	: BaseTank(renderer, details)
 {
 	LowPriorBehavior = SEEK;
-	astar = new AStar(this, mCollisionMap);
+///	astar = new AStar(this, mCollisionMap);
 
 
 	for (GameObject* wall : ObstacleManager::Instance()->GetObstacles())
@@ -80,48 +80,63 @@ void b023200hTank::RunHighPrior(float deltaTime)
 		angle = 0.0f;
 	if (target->GetCentralPosition().Distance(this->GetCentralPosition()) > 35)
 	{
-		if (Vec2DDistance(Vector2D(x, y), this->GetCentralPosition()) <= 35 || angle >  0.25)
+		if (angle >  0.35)
 		{
 			if (mCurrentSpeed < 0)
 				mCurrentSpeed += (Vec2DDistance(Vector2D(x, y), this->GetCentralPosition()) * kSpeedIncrement) * deltaTime;
 			if (mCurrentSpeed > 0)
 				mCurrentSpeed = 0;
-
+			mCurrentSpeed -= kSpeedIncrement / 50 * deltaTime;
+			//mCurrentSpeed += kSpeedIncrement / 100 * deltaTime;
 			RotateHeadingToFacePosition(Vector2D(x, y), deltaTime);
 			RotateHeadingToFacePosition(Vector2D(x, y), deltaTime);
 			RotateHeadingToFacePosition(Vector2D(x, y), deltaTime);
-			if (angle < 0.05)
+			if (angle < 0.35)
 				FireRockets();
+			RotateManByRadian(kManTurnRate, -3, deltaTime);
+		
+			Vector2D toTarget2 = mTanksICanSee[0]->GetCentralPosition() - GetCentralPosition();
+			toTarget2.Normalize();
+			double dot = toTarget2.Dot(mManFireDirection);
+			if (dot < 0.99f)
+				RotateManByRadian(kManTurnRate, -3, 1);
+			else
+			{
+				FireABullet();
+			}
 		//	RotateHeadingToFacePosition(Vector2D(x, y), deltaTime);
 			return;
 		}
 		mCurrentSpeed -= (kSpeedIncrement  * Vec2DDistance(Vector2D(x, y), this->GetCentralPosition())) * deltaTime;
-		if (mCurrentSpeed < -GetMaxSpeed() /2 )
-			mCurrentSpeed = -GetMaxSpeed() / 2;
+		if (mCurrentSpeed < -GetMaxSpeed() /3 )
+			mCurrentSpeed = -GetMaxSpeed() / 3;
 
 		RotateHeadingToFacePosition(Vector2D(x, y), deltaTime);
 		RotateHeadingToFacePosition(Vector2D(x, y), deltaTime);
 		RotateHeadingToFacePosition(Vector2D(x, y), deltaTime);
-		toTarget = mTanksICanSee[0]->GetCentralPosition() - GetCentralPosition();
-		toTarget.Normalize();
-		double dot = toTarget.Dot(mManFireDirection);
-		if (angle < 0.05)
 			FireRockets();
-		float angle = atan2(mManFireDirection.y - toTarget.y, mManFireDirection.x - toTarget.x) * 90 / Pi;
-
-			angle = 3;
-
-		RotateManByRadian(kManTurnRate, -angle, 1);
-		FireABullet();
 		
+
+			Vector2D toTarget2 = mTanksICanSee[0]->GetCentralPosition() - GetCentralPosition();
+			toTarget2.Normalize();
+			double dot = toTarget2.Dot(mManFireDirection);
+			if (dot < 0.99f)
+				RotateManByRadian(kManTurnRate, -3, 1);
+			else
+			{
+				FireABullet();
+			}
+			return;	
 	}
 	else
 	{
-		if (mCurrentSpeed < 0)
-			mCurrentSpeed += (Vec2DDistance(Vector2D(x, y), this->GetCentralPosition()) * kSpeedIncrement) * deltaTime;
+		//if (mCurrentSpeed < 0)
+		//	mCurrentSpeed += (Vec2DDistance(Vector2D(x, y), this->GetCentralPosition()) * kSpeedIncrement) * deltaTime;
 	
-		mCurrentSpeed -=  kSpeedIncrement / 50 * deltaTime;
-		mCurrentSpeed +=  kSpeedIncrement / 100 * deltaTime;
+		mCurrentSpeed -=  kSpeedIncrement  * deltaTime;
+		if (mCurrentSpeed < -GetMaxSpeed() / 3)
+			mCurrentSpeed = -GetMaxSpeed() / 3;
+		//mCurrentSpeed +=  kSpeedIncrement / 100 * deltaTime;
 		if (mCurrentSpeed > 0)
 			mCurrentSpeed = 0;
 		x = target->GetCentralPosition().x;
@@ -141,17 +156,7 @@ void b023200hTank::RunHighPrior(float deltaTime)
 			RotateHeadingToFacePosition(Vector2D(x, y), deltaTime);
 		}
 		
-
-		toTarget = mTanksICanSee[0]->GetCentralPosition() - GetCentralPosition();
-		toTarget.Normalize();
-		double dot = toTarget.Dot(mManFireDirection);
-		 angle = atan2(mManFireDirection.y - toTarget.y, mManFireDirection.x - toTarget.x) * 90 / Pi;
-		if (angle > 0)
-			angle = 3;
-	
-		RotateManByRadian(kManTurnRate, -angle, 1);
-
-
+		
 	}
 
 }
@@ -161,8 +166,8 @@ void b023200hTank::RunLowPrior(float deltaTime)
 	if (ishit || ishit1 || ishit2 || ishit3 || ishit4 || ishit5 )
 	{
 		 
-		//if (LowPriorBehavior == SEEK || LowPriorBehavior == ARRIVE || LowPriorBehavior == PURSUIT)
-		//	LowPriorBehavior = AVOIDOB;
+		if (LowPriorBehavior == SEEK || LowPriorBehavior == ARRIVE || LowPriorBehavior == PURSUIT)
+			LowPriorBehavior = AVOIDOB;
 
 	}
 	else if (LowPriorBehavior == AVOIDOB)
@@ -299,13 +304,16 @@ void b023200hTank::Update(float deltaTime, SDL_Event e)
 	{
 		LowPriorBehavior = PURSUIT;
 		TargLastSeen = mTanksICanSee[0]->GetCentralPosition();
+		x = TargLastSeen.x;
+		y = TargLastSeen.y;
+
 	}
 	else if (LowPriorBehavior == PURSUIT)
 	{
 		LowPriorBehavior = SEEK;
 	}
-	astar = new AStar(this, mCollisionMap);
-	astar->Tick();
+	//astar = new AStar(this, mCollisionMap);
+	//astar->Tick();
 	switch (e.type)
 	{
 		case SDL_MOUSEBUTTONUP:
@@ -330,6 +338,7 @@ void b023200hTank::Update(float deltaTime, SDL_Event e)
 	break;
 	}
 
+	/*
 	if (astar->finalpath.size() > 0)
 	{
 		if (astar->finalpath.back().position.Distance(GetCentralPosition()) <= 35)
@@ -340,6 +349,7 @@ void b023200hTank::Update(float deltaTime, SDL_Event e)
 			y = astar->finalpath.back().position.y;
 		}
 	}
+	*/
 	if (x == 0 && y == 0 )
 		return;
 	if (LowPriorBehavior == PURSUIT && mTanksICanSee.size() > 0)
@@ -486,13 +496,10 @@ bool b023200hTank::ShouldAvoidD(Vector2D TopLeft, Vector2D BotLeft, Vector2D up,
 
 void b023200hTank::Render()
 {
-	if (astar->finalpath.size() > 0)
-	{
-		DrawDebugCircle(astar->finalpath.back().position, 16, 255, 255, 155);
-	}
+	
 	DrawDebugCircle(GetCentralPosition(), GetHealth(), 255, 255, 255);
 	BaseTank::Render();
-	return;//render disabled here
+	
 	//std::cout << " health = " << GetHealth() << " \n";
 	Force = Vector2D(0, 0);
 	int feelerlength = 50;
@@ -516,7 +523,7 @@ void b023200hTank::Render()
 	for(int i = 0; i < corners.size() ; i+= 4)
 	{
 
-		continue;///TODO OBS AVOIDANCE IS DISABLED HERE
+		
 	Vector2D newpos = corners[i];
 	Vector2D newpos1 = corners[i + 1];
 	Vector2D newpos2 = corners[i + 2];
