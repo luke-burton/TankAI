@@ -12,7 +12,7 @@
 #include "DumbTank.h"
 #include "TestTank.h"
 #include "StudentTanks/b023200h/b023200hTank.h"
-#include "StudentTanks/w019563h/w019563hTank.h"
+#include "StudentTanks/a016430f/a016430fTank.h"
 #include <cassert>
 
 
@@ -212,9 +212,9 @@ BaseTank* TankManager::GetTankObject(SDL_Renderer* renderer, TankSetupDetails de
 		b023200hTank* newTank = new b023200hTank(renderer, details);
 		newBaseTank = (BaseTank*)newTank;
 	}
-	if (details.StudentName == "w019563hTank")
+	if (details.StudentName == "a016430fTank")
 	{
-		w019563hTank* newTank = new w019563hTank(renderer, details);
+		a016430fTank* newTank = new a016430fTank(renderer, details);
 		newBaseTank = (BaseTank*)newTank;
 	}
 

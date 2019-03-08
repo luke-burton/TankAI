@@ -82,6 +82,7 @@
     <ClInclude Include="PickUpManager.h" />
     <ClInclude Include="Projectile.h" />
     <ClInclude Include="ProjectileManager.h" />
+    <ClInclude Include="StudentTanks\a016430f\a016430fTank.h" />
     <ClInclude Include="StudentTanks\b023200h\AStar.h" />
     <ClInclude Include="StudentTanks\b023200h\b023200hTank.h" />
     <ClInclude Include="StudentTanks\w019563h\w019563hTank.h" />
@@ -108,6 +109,7 @@
     <ClCompile Include="Projectile.cpp" />
     <ClCompile Include="ProjectileManager.cpp" />
     <ClCompile Include="Source.cpp" />
+    <ClCompile Include="StudentTanks\a016430f\a016430fTank.cpp" />
     <ClCompile Include="StudentTanks\b023200h\AStar.cpp" />
     <ClCompile Include="StudentTanks\b023200h\b023200hTank.cpp" />
     <ClCompile Include="StudentTanks\w019563h\w019563hTank.cpp" />

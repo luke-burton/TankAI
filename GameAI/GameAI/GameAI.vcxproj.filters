@@ -25,6 +25,9 @@
     <Filter Include="StudentTanks\Spakkertank">
       <UniqueIdentifier>{30af308f-8d12-440c-9cac-038a473bb8ae}</UniqueIdentifier>
     </Filter>
+    <Filter Include="StudentTanks\Spakker2tank">
+      <UniqueIdentifier>{97d289c7-d78b-4bea-af7c-8c0f604f5bee}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Waypoint.h">
@@ -105,6 +108,9 @@
     <ClInclude Include="StudentTanks\w019563h\w019563hTank.h">
       <Filter>StudentTanks\Spakkertank</Filter>
     </ClInclude>
+    <ClInclude Include="StudentTanks\a016430f\a016430fTank.h">
+      <Filter>StudentTanks\Spakker2tank</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="WaypointManager.cpp">
@@ -184,6 +190,9 @@
     </ClCompile>
     <ClCompile Include="StudentTanks\w019563h\w019563hTank.cpp">
       <Filter>StudentTanks\Spakkertank</Filter>
+    </ClCompile>
+    <ClCompile Include="StudentTanks\a016430f\a016430fTank.cpp">
+      <Filter>StudentTanks\Spakker2tank</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
